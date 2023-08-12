@@ -151,7 +151,15 @@ class PlayerBase:
     #                                     angle_inclinaison):
     #         pygame.draw.rect(screen, BLUE, rotated_rect, 2)
 
-    def rotate(self, image, pos, origin_pos, angle):
+    def blit_rotate(self, surf, image, pos, origin_pos, angle):
+        """
+        :param surf: pygame.display(), c'est la fenêtre
+        :param image: pygame.Surface(), une surface
+        :param pos: la position du coin supérieur gauche de la surface qui est le centre de la rotation
+        :param origin_pos: permet de décaler le centre de rotation
+        :param angle: angle de rotation
+        :return: affiche la surface et met à jour les données de position de l'objet surface
+        """
         # calculate the axis aligned bounding box of the rotated image
         w, h = image.get_size()
         sin_a, cos_a = math.sin(math.radians(angle)), math.cos(math.radians(angle))
@@ -168,14 +176,17 @@ class PlayerBase:
 
         # get a rotated image
         rotated_image = pygame.transform.rotate(image, angle)
-
-        return rotated_image, origin
-
-    def blit_rotate(self, surf, image, pos, origin_pos, angle):
-        rotated_image, origin = self.rotate(image, pos, origin_pos, angle)
         self.rotated_rect = rotated_image.get_rect()
         self.rotated_rect.x, self.rotated_rect.y = origin
         surf.blit(rotated_image, origin)
+
+        # return rotated_image, origin
+
+    # def rotate(self, surf, image, pos, origin_pos, angle):
+    #     rotated_image, origin = self.rotate(image, pos, origin_pos, angle)
+    #     self.rotated_rect = rotated_image.get_rect()
+    #     self.rotated_rect.x, self.rotated_rect.y = origin
+    #     surf.blit(rotated_image, origin)
 
     @staticmethod
     def point_dans_rectangle_incline(a, b, x, y, l, h, alpha):
