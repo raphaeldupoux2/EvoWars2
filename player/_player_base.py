@@ -176,9 +176,11 @@ class PlayerBase:
 
         # get a rotated image
         rotated_image = pygame.transform.rotate(image, angle)
-        self.rotated_rect = rotated_image.get_rect()
-        self.rotated_rect.x, self.rotated_rect.y = origin
         surf.blit(rotated_image, origin)
+
+        rotated_rect = rotated_image.get_rect()
+        rotated_rect.x, rotated_rect.y = origin
+        return rotated_rect
 
         # return rotated_image, origin
 
@@ -354,20 +356,20 @@ class PlayerBase:
     def affiche_arme_x_y_inverse(self):
         if self.etat_attaque == "fanatique":
             if self.coup == "coup droit":
-                self.blit_rotate(self.w.window, self.arme, (self.x, self.y), (-5, 0), self.arme_degree + 90)
+                self.rotated_rect = self.blit_rotate(self.w.window, self.arme, (self.x, self.y), (-5, 0), self.arme_degree + 90)
             elif self.coup == "revert":
-                self.blit_rotate(self.w.window, self.arme, (self.x, self.y), (35, 0), self.arme_degree + 90)
+                self.rotated_rect = self.blit_rotate(self.w.window, self.arme, (self.x, self.y), (35, 0), self.arme_degree + 90)
             else:
-                self.blit_rotate(self.w.window, self.arme, (self.x, self.y), (-15, 0), self.arme_degree + 90)
+                self.rotated_rect = self.blit_rotate(self.w.window, self.arme, (self.x, self.y), (-15, 0), self.arme_degree + 90)
         else:
             if self.coup == "coup droit":
-                self.blit_rotate(self.w.window, self.arme, (self.x, self.y), (-5, 0),
+                self.rotated_rect = self.blit_rotate(self.w.window, self.arme, (self.x, self.y), (-5, 0),
                                  self.arme_degree_r(self.direction) + 90)
             elif self.coup == "revert":
-                self.blit_rotate(self.w.window, self.arme, (self.x, self.y), (35, 0),
+                self.rotated_rect = self.blit_rotate(self.w.window, self.arme, (self.x, self.y), (35, 0),
                                  self.arme_degree_r(self.direction) + 90)
             else:
-                self.blit_rotate(self.w.window, self.arme, (self.x, self.y), (-5, 0), self.arme_degree_r(self.direction) + 90)
+                self.rotated_rect = self.blit_rotate(self.w.window, self.arme, (self.x, self.y), (-5, 0), self.arme_degree_r(self.direction) + 90)
 
     # def detect_ball(self):
     #     arme
