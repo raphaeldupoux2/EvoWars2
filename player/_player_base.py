@@ -2,23 +2,6 @@ import math
 import pygame
 
 
-def normalize_angle(angle):
-    """
-    Convertit un angle en un angle compris entre -180 et 180 degrés.
-
-    Arguments :
-    angle -- L'angle en degrés.
-
-    Retourne :
-    L'angle normalisé en degrés.
-    """
-
-    normalized_angle = angle % 360  # Calcul de l'angle modulo 360
-    if normalized_angle > 180:  # Si l'angle est supérieur à 180 degrés
-        normalized_angle -= 360  # Soustraire 360 degrés pour obtenir un angle négatif
-    return normalized_angle
-
-
 class Outil:
     def __init__(self):
         self.ligne = pygame.Surface([1000, 1])
@@ -67,27 +50,12 @@ class PlayerBase:
 
         self.rotated_rect = None
 
-    @property
-    def curseur(self):
-        if self.is_in_control is False:
-            return {'x': self.x,
-                    'y': self.y}
-        return {'x': pygame.mouse.get_pos()[0],
-                'y': pygame.mouse.get_pos()[1]}
-
-    def angle_vers(self, cible: dict):
-        return math.atan2(cible['y'] - self.y, cible['x'] - self.x)
-
-    def arme_degree_r(self, curseur):
+    def arme_degree_relatif(self, curseur):
         """
         :param curseur:
         :return: angle de l'arme + angle de la direction du curseur
         """
         return -self.angle_vers(curseur) * 180 / math.pi + self.arme_degree
-
-    def move_to(self, cible: dict):
-        self.x += math.cos(self.angle_vers(cible)) * self.vel(cible)
-        self.y += math.sin(self.angle_vers(cible)) * self.vel(cible)
 
     def touche(self, objet):
         distance = math.sqrt((objet.x - self.x) ** 2 + (objet.y - self.y) ** 2)
@@ -115,14 +83,6 @@ class PlayerBase:
                 if self.touche(obstacle):
                     self.x = old_x
 
-    def inside_circle(self, objet: list):
-        if (objet[0] - self.x) ** 2 + (objet[1] - self.y) ** 2 <= 20 ** 2:
-            return True
-        return False
-
-    def distance_to(self, objet: dict):
-        return math.sqrt((objet['y'] - self.y) ** 2 + (objet['x'] - self.x) ** 2)
-
     def vel(self, curseur):
         vel = self.distance_to(curseur) / 20
         if vel > 2:
@@ -130,81 +90,9 @@ class PlayerBase:
         return vel
 
     def affiche_skin(self):
-        return pygame.draw.circle(self.w.window, self.color, [self.x, self.y], self.radius, 0), \
-               pygame.draw.circle(self.w.window, (0, 30, 55), [self.x, self.y], 100, 1), \
-               pygame.draw.circle(self.w.window, (0, 30, 55), [self.x, self.y], 110, 1)
-
-    def affiche_curseur(self):
-        return pygame.draw.circle(self.w.window, (255, 0, 0), (self.curseur['x'], self.curseur['y']), 1)
-
-    # def rotate(self):
-    #     rotated_surface, origin = blit_rotate(rotated_surface, (x_rectangle, y_rectangle), (200, 0), -angle_inclinaison)
-    #
-    #     rotated_rect = rotated_surface.get_rect()
-    #     rotated_rect.x, rotated_rect.y = origin
-    #
-    #     screen.blit(rotated_surface, origin)
-    #
-    #     if point_dans_rectangle_incline(curseur()['x'], curseur()['y'],
-    #                                     rotated_rect.centerx, rotated_rect.centery,
-    #                                     largeur_rectangle, hauteur_rectangle,
-    #                                     angle_inclinaison):
-    #         pygame.draw.rect(screen, BLUE, rotated_rect, 2)
-
-    def rotate(self, image, pos, origin_pos, angle):
-        # calculate the axis aligned bounding box of the rotated image
-        w, h = image.get_size()
-        sin_a, cos_a = math.sin(math.radians(angle)), math.cos(math.radians(angle))
-        min_x, min_y = min([0, sin_a * h, cos_a * w, sin_a * h + cos_a * w]), max(
-            [0, sin_a * w, -cos_a * h, sin_a * w - cos_a * h])
-
-        # calculate the translation of the pivot
-        pivot = pygame.math.Vector2(origin_pos[0], -origin_pos[1])
-        pivot_rotate = pivot.rotate(angle)
-        pivot_move = pivot_rotate - pivot
-
-        # calculate the upper left origin of the rotated image
-        origin = (pos[0] - origin_pos[0] + min_x - pivot_move[0], pos[1] - origin_pos[1] - min_y + pivot_move[1])
-
-        # get a rotated image
-        rotated_image = pygame.transform.rotate(image, angle)
-
-        return rotated_image, origin
-
-    def blit_rotate(self, surf, image, pos, origin_pos, angle):
-        rotated_image, origin = self.rotate(image, pos, origin_pos, angle)
-        self.rotated_rect = rotated_image.get_rect()
-        self.rotated_rect.x, self.rotated_rect.y = origin
-        surf.blit(rotated_image, origin)
-
-    @staticmethod
-    def point_dans_rectangle_incline(a, b, x, y, l, h, alpha):
-        """
-        Vérifie si un point donné (a, b) se trouve à l'intérieur d'un rectangle incliné.
-
-        Args:
-            a (float): Coordonnée x du point.
-            b (float): Coordonnée y du point.
-            x (float): Coordonnée x du centre du rectangle.
-            y (float): Coordonnée y du centre du rectangle.
-            l (float): Largeur du rectangle.
-            h (float): Hauteur du rectangle.
-            alpha (float): Angle d'inclinaison du rectangle en degrés.
-
-        Returns:
-            bool: True si le point (a, b) est à l'intérieur du rectangle incliné, False sinon.
-        """
-        # Déplacer le point pour que le centre du rectangle soit à l'origine du repère.
-        a -= x
-        b -= y
-
-        # Appliquer une rotation inverse autour de l'origine par l'angle d'inclinaison négatif (-alpha).
-        rad_alpha = math.radians(-alpha)
-        rotated_a = a * math.cos(rad_alpha) - b * math.sin(rad_alpha)
-        rotated_b = a * math.sin(rad_alpha) + b * math.cos(rad_alpha)
-
-        # Vérifier si le point après rotation inverse est à l'intérieur d'un rectangle non incliné.
-        return abs(rotated_a) <= l / 2 and abs(rotated_b) <= h / 2
+        return pygame.draw.circle(self.w.w, self.color, [self.x, self.y], self.radius, 0), \
+               pygame.draw.circle(self.w.w, (0, 30, 55), [self.x, self.y], 100, 1), \
+               pygame.draw.circle(self.w.w, (0, 30, 55), [self.x, self.y], 110, 1)
 
     # Fanatique
     def bouton_fanatique(self, event):
@@ -343,50 +231,21 @@ class PlayerBase:
     def affiche_arme_x_y_inverse(self):
         if self.etat_attaque == "fanatique":
             if self.coup == "coup droit":
-                self.blit_rotate(self.w.window, self.arme, (self.x, self.y), (-5, 0), self.arme_degree + 90)
+                self.rotated_rect = self.blit_rotate(self.w.window, self.arme, (self.x, self.y), (-5, 0), self.arme_degree + 90)
             elif self.coup == "revert":
-                self.blit_rotate(self.w.window, self.arme, (self.x, self.y), (35, 0), self.arme_degree + 90)
+                self.rotated_rect = self.blit_rotate(self.w.window, self.arme, (self.x, self.y), (35, 0), self.arme_degree + 90)
             else:
-                self.blit_rotate(self.w.window, self.arme, (self.x, self.y), (-15, 0), self.arme_degree + 90)
+                self.rotated_rect = self.blit_rotate(self.w.window, self.arme, (self.x, self.y), (-15, 0), self.arme_degree + 90)
         else:
             if self.coup == "coup droit":
-                self.blit_rotate(self.w.window, self.arme, (self.x, self.y), (-5, 0),
+                self.rotated_rect = self.blit_rotate(self.w.window, self.arme, (self.x, self.y), (-5, 0),
                                  self.arme_degree_r(self.direction) + 90)
             elif self.coup == "revert":
-                self.blit_rotate(self.w.window, self.arme, (self.x, self.y), (35, 0),
+                self.rotated_rect = self.blit_rotate(self.w.window, self.arme, (self.x, self.y), (35, 0),
                                  self.arme_degree_r(self.direction) + 90)
             else:
-                self.blit_rotate(self.w.window, self.arme, (self.x, self.y), (-5, 0), self.arme_degree_r(self.direction) + 90)
+                self.rotated_rect = self.blit_rotate(self.w.w, self.arme, (self.x, self.y), (-5, 0), self.arme_degree_relatif(self.direction) + 90)
 
-    # def detect_ball(self):
-    #     arme
-    #     if arme.collidepoint(self.projectile[0].x, self.projectile[0].y)
-
-    def detection_collision_arme(self):
-        # print(self.check_collision(self.arme.get_rect(), self.projectile[0]), [self.x, self.y], end=' ')
-        pass
-
-    def check_collision(self, rect, circle):
-        rect_center_x = rect.x + rect.width / 2
-        rect_center_y = rect.y + rect.height / 2
-
-        circle_distance_x = abs(circle.x - rect_center_x)
-        circle_distance_y = abs(circle.y - rect_center_y)
-        print(circle_distance_x, circle_distance_y, rect.width / 2 + circle.radius)
-
-        if circle_distance_x > (rect.width / 2 + circle.radius):
-            return False
-        if circle_distance_y > (rect.height / 2 + circle.radius):
-            return False
-
-        if circle_distance_x <= (rect.width / 2):
-            return True
-        if circle_distance_y <= (rect.height / 2):
-            return True
-
-        corner_distance_sq = (circle_distance_x - rect.width / 2) ** 2 + (circle_distance_y - rect.height / 2) ** 2
-
-        return corner_distance_sq <= (circle.radius ** 2)
 
     def bouton_degainage(self, event):
         if event.type == pygame.KEYDOWN:

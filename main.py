@@ -43,7 +43,7 @@ def luminosite_tournante(couleur_fond, vitesse_changement, assombrir):
 pygame.init()
 
 game = GameInstance()
-game.window.set_up()
+game.w.set_up()
 projectile_move = False
 direction = 0
 
@@ -67,7 +67,7 @@ while running:
     for spirit in game.player.spirit:
         spirit.color = game.couleur_fond
 
-    game.window.window.fill(game.couleur_fond)
+    game.w.w.fill(game.couleur_fond)
 
     for terrain in game.terrain:
         terrain.affiche_terrain()
@@ -84,11 +84,11 @@ while running:
     # x, y = 500, 500
     # pygame.draw.circle(game.window.window, (255, 0, 0), (x, y), 7, 1)
 
-    if game.player.physique[0].point_dans_rectangle_incline(game.projectile.x, game.projectile.y, game.player.physique[0].rotated_rect.centerx, game.player.physique[0].rotated_rect.centery, 30, 100, -game.player.physique[0].arme_degree_r(game.player.physique[0].direction) + 90):
+    if game.player.physique[0].point_dans_rectangle_incline(game.projectile.x, game.projectile.y, game.player.physique[0].rotated_rect.centerx, game.player.physique[0].rotated_rect.centery, 30, 100, -game.player.physique[0].arme_degree_relatif(game.player.physique[0].direction) + 90):
         # print(game.player.physique[0].arme_degree_r(game.player.physique[0].curseur))
         game.player.physique[0].color = (255, 0, 0)
         projectile_move = True
-        direction = game.player.physique[0].arme_degree_r(game.player.physique[0].curseur)
+        direction = game.player.physique[0].arme_degree_relatif(game.player.physique[0].curseur)
 
     else:
         game.player.physique[0].color = (50, 50, 90)
