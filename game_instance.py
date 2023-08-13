@@ -22,3 +22,37 @@ class GameInstance:
         self.player = Player(self.window, self.arbre)
         self.projectile = Projectile(self.window, self.window.WINDOW_WIDTH/2, self.window.WINDOW_HEIGHT/2)
         self.controle = Controle()
+        self.assombrir = [False, False, False]
+
+    @staticmethod
+    def luminosite_tournante(couleur_fond, vitesse_changement, assombrir):
+        if couleur_fond[0] >= 255:
+            assombrir[0] = True
+        if couleur_fond[1] >= 255:
+            assombrir[1] = True
+        if couleur_fond[2] >= 255:
+            assombrir[2] = True
+
+        if couleur_fond[0] <= 0:
+            assombrir[0] = False
+        if couleur_fond[1] <= 0:
+            assombrir[1] = False
+        if couleur_fond[2] <= 0:
+            assombrir[2] = False
+
+        if assombrir[0] is True:
+            couleur_fond = tuple(sum(i) for i in zip(couleur_fond, (-vitesse_changement, 0, 0)))
+        else:
+            couleur_fond = tuple(sum(i) for i in zip(couleur_fond, (vitesse_changement, 0, 0)))
+
+        if assombrir[1] is True:
+            couleur_fond = tuple(sum(i) for i in zip(couleur_fond, (0, -vitesse_changement, 0)))
+        else:
+            couleur_fond = tuple(sum(i) for i in zip(couleur_fond, (0, vitesse_changement, 0)))
+
+        if assombrir[2] is True:
+            couleur_fond = tuple(sum(i) for i in zip(couleur_fond, (0, 0, -vitesse_changement)))
+        else:
+            couleur_fond = tuple(sum(i) for i in zip(couleur_fond, (0, 0, vitesse_changement)))
+
+        return couleur_fond, assombrir
