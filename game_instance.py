@@ -17,8 +17,8 @@ class GameInstance:
         self.window = Window()
         self.couleur_fond = GameInstance.couleur_sable
         self.terrain: list = [TerrainTennis(self.window, 300, 100)]
-        self.arbre: list = [Arbre(self.window, 200, 500), Arbre(self.window, 80, 600), Arbre(self.window, 90, 400), Arbre(self.window, 800, 60)]
-        self.stone: list = [Stone(self.window, 800, 600), Stone(self.window, 850, 555)]
+        self.arbre: list = [Arbre(self.window, 200, 500), Arbre(self.window, 80, 600), Arbre(self.window, 90, 400), Arbre(self.window, 850, 150)]#, Arbre(self.window, 110, 550), Arbre(self.window, 250, 520), Arbre(self.window, 150, 420), Arbre(self.window, 90, 620), Arbre(self.window, 800, 60)]
+        self.stone: list = [Stone(self.window, 800, 600), Stone(self.window, 830, 570), Stone(self.window, 860, 600)]
         self.player = Player(self.window, self.arbre)
         self.projectile = Projectile(self.window, self.window.WINDOW_WIDTH/2, self.window.WINDOW_HEIGHT/2)
         self.controle = Controle()

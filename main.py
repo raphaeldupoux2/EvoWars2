@@ -25,7 +25,7 @@ while running:
         for physique in game.player.physique:
             physique.bouton(event)
 
-    game.couleur_fond, game.assombrir = game.luminosite_tournante(couleur_fond=game.couleur_fond, vitesse_changement=1, assombrir=game.assombrir)
+    game.couleur_fond, game.assombrir = game.luminosite_tournante(couleur_fond=game.couleur_fond, vitesse_changement=0.1, assombrir=game.assombrir)
 
     for spirit in game.player.spirit:
         spirit.color = game.couleur_fond
