@@ -1,6 +1,8 @@
 from player._player_base import PlayerBase
 import pygame
 
+from utils import Utils
+
 
 class Player:
     def __init__(self, window, liste_obstacle):
@@ -58,9 +60,9 @@ class PlayerPhysique(PlayerBase):
 
         self.bouge()
         self.affiche_skin()
-        self.affiche_curseur()
-        self.detection_collision_arme()
-        self.w.window.blit(self.image, (self.x - self.longueur/2, self.y - self.largeur/2 - 20))
+        Utils.affiche_curseur(self.w.window)
+        # self.detection_collision_arme()
+        self.w.window.blit(self.image, (self.position['x'] - self.longueur/2, self.position['y'] - self.largeur/2 - 20))
 
 
 class PlayerSpirit(PlayerBase):
@@ -103,5 +105,5 @@ class PlayerSpirit(PlayerBase):
 
         self.bouge()
         self.affiche_skin()
-        self.affiche_curseur()
-        self.detection_collision_arme()
+        Utils.affiche_curseur(self.w.window)
+        # self.detection_collision_arme()

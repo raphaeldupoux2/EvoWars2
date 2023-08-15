@@ -1,6 +1,8 @@
 import math
 import pygame
 
+from utils import Utils
+
 
 class Outil:
     def __init__(self):
@@ -26,8 +28,9 @@ class PlayerBase:
     def __init__(self, window, liste_obstacle, color=(50, 50, 90), is_in_control=True):
         self.is_in_control = is_in_control
         self.w = window
-        self.x = self.w.WINDOW_WIDTH / 2
-        self.y = self.w.WINDOW_HEIGHT / 2
+        self.position = {'x': self.w.WINDOW_WIDTH / 2, 'y': self.w.WINDOW_WIDTH / 2}
+        # self.x = self.w.WINDOW_WIDTH / 2
+        # self.y = self.w.WINDOW_WIDTH / 2
         self.outil = Outil()
         self.radius = 20
         self.color = color
@@ -55,10 +58,10 @@ class PlayerBase:
         :param curseur:
         :return: angle de l'arme + angle de la direction du curseur
         """
-        return -self.angle_vers(curseur) * 180 / math.pi + self.arme_degree
+        return -Utils.angle_entre(self.position, curseur) * 180 / math.pi + self.arme_degree
 
     def touche(self, objet):
-        distance = math.sqrt((objet.x - self.x) ** 2 + (objet.y - self.y) ** 2)
+        distance = math.sqrt((objet.x - self.position['x']) ** 2 + (objet.y - self.position['y']) ** 2)
         if distance <= self.radius + objet.tronc_radius:
             # self.color = (255, 0, 0)
             return True
@@ -67,32 +70,32 @@ class PlayerBase:
             return False
 
     def bouge(self):
-        old_x, old_y = self.x, self.y
-        self.move_to(self.direction)
+        old_x, old_y = self.position['x'], self.position['y']
+        Utils.move_to(self.position, self.direction, self.vel())
         if not self.solide:
             return
 
         for obstacle in self.liste_obstacle:
             if self.touche(obstacle):
-                new_x = self.x
-                self.x = old_x
+                new_x = self.position['x']
+                self.position['x'] = old_x
                 if self.touche(obstacle):
-                    self.x = new_x
-                    self.y = old_y
+                    self.position['x'] = new_x
+                    self.position['y'] = old_y
 
                 if self.touche(obstacle):
-                    self.x = old_x
+                    self.position['x'] = old_x
 
-    def vel(self, curseur):
-        vel = self.distance_to(curseur) / 20
+    def vel(self):
+        vel = Utils.distance_between(self.position, Utils.curseur()) / 20
         if vel > 2:
             return 2 + self.vit_modif
         return vel
 
     def affiche_skin(self):
-        return pygame.draw.circle(self.w.w, self.color, [self.x, self.y], self.radius, 0), \
-               pygame.draw.circle(self.w.w, (0, 30, 55), [self.x, self.y], 100, 1), \
-               pygame.draw.circle(self.w.w, (0, 30, 55), [self.x, self.y], 110, 1)
+        return pygame.draw.circle(self.w.window, self.color, [self.position['x'], self.position['y']], self.radius, 0), \
+               pygame.draw.circle(self.w.window, (0, 30, 55), [self.position['x'], self.position['y']], 100, 1), \
+               pygame.draw.circle(self.w.window, (0, 30, 55), [self.position['x'], self.position['y']], 110, 1)
 
     # Fanatique
     def bouton_fanatique(self, event):
@@ -114,56 +117,56 @@ class PlayerBase:
         if self.arme_degree == -120 or self.arme_degree == 120:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 self.etat_attaque = "coup"
-                self.direction_attaque = self.curseur
+                self.direction_attaque = Utils.curseur()
 
     def coup_epee(self):
         if self.coup == "coup droit":
             self.arme_degree += 12
-            if normalize_angle(self.arme_degree) >= 120:
+            if Utils.normalize_angle(self.arme_degree) >= 120:
                 self.etat_attaque = "repos"
 
         elif self.coup == "revert":
             self.arme_degree -= 12
-            if normalize_angle(self.arme_degree) <= -120:
+            if Utils.normalize_angle(self.arme_degree) <= -120:
                 self.etat_attaque = "repos"
 
     def bouton_charge(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_z:
                 self.anim_charge = True
-                self.direction_charge = self.curseur
+                self.direction_charge = Utils.curseur()
                 # self.vit_modif += 8
 
     def charge(self):
-        if abs(self.x - self.direction_charge['x']) < 20 and abs(
-                self.y - self.direction_charge['y'] < 20):
+        if abs(self.position['x'] - self.direction_charge['x']) < 20 and abs(
+                self.position['y'] - self.direction_charge['y'] < 20):
             self.anim_charge = False
             # self.vit_modif -= 8
 
     def ligne_vision(self, degree):
-        angle = -self.angle_vers(self.curseur) * 180 / math.pi - degree
-        self.blit_rotate(self.w.window, self.ligne, (self.x, self.y), (0, 0.5), angle)
+        angle = -Utils.angle_entre(self.position, Utils.curseur()) * 180 / math.pi - degree
+        Utils.blit_rotate(self.w.window, self.ligne, (self.position['x'], self.position['y']), (0, 0.5), angle)
 
-    def angle_mort(self, window, curseur):
+    def angle_mort(self, window):
         # Calculer les angles des deux bords du cône
-        angle_g = self.angle_vers(curseur) - math.pi / 3
-        angle_d = self.angle_vers(curseur) + math.pi / 3
+        angle_g = Utils.angle_entre(self.position, Utils.curseur()) - math.pi / 3
+        angle_d = Utils.angle_entre(self.position, Utils.curseur()) + math.pi / 3
 
         # Calculer les coordonnées des coins du rectangle gauche
-        x1_g = self.x - 1000 * math.cos(angle_g)
-        y1_g = self.y - 1000 * math.sin(angle_g)
-        x2_g = self.x + 1000 * math.cos(angle_g)
-        y2_g = self.y + 1000 * math.sin(angle_g)
+        x1_g = self.position['x'] - 1000 * math.cos(angle_g)
+        y1_g = self.position['y'] - 1000 * math.sin(angle_g)
+        x2_g = self.position['x'] + 1000 * math.cos(angle_g)
+        y2_g = self.position['y'] + 1000 * math.sin(angle_g)
         x3_g = x2_g + 1000 * math.sin(angle_g)
         y3_g = y2_g - 1000 * math.cos(angle_g)
         x4_g = x1_g + 1000 * math.sin(angle_g)
         y4_g = y1_g - 1000 * math.cos(angle_g)
 
         # Calculer les co0données des coins du rectangle droit
-        x1_d = self.x - 1000 * math.cos(angle_d)
-        y1_d = self.y - 1000 * math.sin(angle_d)
-        x2_d = self.x + 1000 * math.cos(angle_d)
-        y2_d = self.y + 1000 * math.sin(angle_d)
+        x1_d = self.position['x'] - 1000 * math.cos(angle_d)
+        y1_d = self.position['y'] - 1000 * math.sin(angle_d)
+        x2_d = self.position['x'] + 1000 * math.cos(angle_d)
+        y2_d = self.position['y'] + 1000 * math.sin(angle_d)
         x3_d = x2_d - 1000 * math.sin(angle_d)
         y3_d = y2_d + 1000 * math.cos(angle_d)
         x4_d = x1_d - 1000 * math.sin(angle_d)
@@ -175,17 +178,17 @@ class PlayerBase:
 
     # Repos
     def repositionnement(self):
-        if 120 > normalize_angle(self.arme_degree) > 0:
+        if 120 > Utils.normalize_angle(self.arme_degree) > 0:
             self.arme_degree += 3
-        elif -120 < normalize_angle(self.arme_degree) <= 0:
+        elif -120 < Utils.normalize_angle(self.arme_degree) <= 0:
             self.arme_degree -= 3
-        elif -180 < normalize_angle(self.arme_degree) < -125:
+        elif -180 < Utils.normalize_angle(self.arme_degree) < -125:
             self.arme_degree += 3
-        elif 180 >= normalize_angle(self.arme_degree) > 125:
+        elif 180 >= Utils.normalize_angle(self.arme_degree) > 125:
             self.arme_degree -= 3
-        elif 125 >= normalize_angle(self.arme_degree) >= 120:
+        elif 125 >= Utils.normalize_angle(self.arme_degree) >= 120:
             self.arme_degree = 120
-        elif -125 <= normalize_angle(self.arme_degree) <= -120:
+        elif -125 <= Utils.normalize_angle(self.arme_degree) <= -120:
             self.arme_degree = -120
 
     def change_hand(self):
@@ -210,41 +213,41 @@ class PlayerBase:
         elif self.etat_attaque == "coup":
             return self.direction_attaque
         else:
-            return self.curseur
+            return Utils.curseur()
 
     def affiche_arme(self):
         if self.etat_attaque == "fanatique":
             if self.coup == "coup droit":
-                self.blit_rotate(self.w.window, self.arme, (self.x, self.y), (0, 20), self.arme_degree)
+                Utils.blit_rotate(self.w.window, self.arme, (self.position['x'], self.position['y']), (0, 20), self.arme_degree)
             elif self.coup == "revert":
-                self.blit_rotate(self.w.window, self.arme, (self.x, self.y), (0, -10), self.arme_degree)
+                Utils.blit_rotate(self.w.window, self.arme, (self.position['x'], self.position['y']), (0, -10), self.arme_degree)
             else:
-                self.blit_rotate(self.w.window, self.arme, (self.x, self.y), (0, 5), self.arme_degree)
+                Utils.blit_rotate(self.w.window, self.arme, (self.position['x'], self.position['y']), (0, 5), self.arme_degree)
         else:
             if self.coup == "coup droit":
-                self.blit_rotate(self.w.window, self.arme, (self.x, self.y), (0, 20), self.arme_degree_r(self.direction))
+                Utils.blit_rotate(self.w.window, self.arme, (self.position['x'], self.position['y']), (0, 20), self.arme_degree_relatif(self.direction))
             elif self.coup == "revert":
-                self.blit_rotate(self.w.window, self.arme, (self.x, self.y), (0, -10), self.arme_degree_r(self.direction))
+                Utils.blit_rotate(self.w.window, self.arme, (self.position['x'], self.position['y']), (0, -10), self.arme_degree_relatif(self.direction))
             else:
-                self.blit_rotate(self.w.window, self.arme, (self.x, self.y), (0, 5), self.arme_degree_r(self.direction))
+                Utils.blit_rotate(self.w.window, self.arme, (self.position['x'], self.position['y']), (0, 5), self.arme_degree_relatif(self.direction))
 
     def affiche_arme_x_y_inverse(self):
         if self.etat_attaque == "fanatique":
             if self.coup == "coup droit":
-                self.rotated_rect = self.blit_rotate(self.w.window, self.arme, (self.x, self.y), (-5, 0), self.arme_degree + 90)
+                self.rotated_rect = Utils.blit_rotate(self.w.window, self.arme, (self.position['x'], self.position['y']), (-5, 0), self.arme_degree + 90)
             elif self.coup == "revert":
-                self.rotated_rect = self.blit_rotate(self.w.window, self.arme, (self.x, self.y), (35, 0), self.arme_degree + 90)
+                self.rotated_rect = Utils.blit_rotate(self.w.window, self.arme, (self.position['x'], self.position['y']), (35, 0), self.arme_degree + 90)
             else:
-                self.rotated_rect = self.blit_rotate(self.w.window, self.arme, (self.x, self.y), (-15, 0), self.arme_degree + 90)
+                self.rotated_rect = Utils.blit_rotate(self.w.window, self.arme, (self.position['x'], self.position['y']), (-15, 0), self.arme_degree + 90)
         else:
             if self.coup == "coup droit":
-                self.rotated_rect = self.blit_rotate(self.w.window, self.arme, (self.x, self.y), (-5, 0),
-                                 self.arme_degree_r(self.direction) + 90)
+                self.rotated_rect = Utils.blit_rotate(self.w.window, self.arme, (self.position['x'], self.position['y']), (-5, 0),
+                                                     self.arme_degree_relatif(self.direction) + 90)
             elif self.coup == "revert":
-                self.rotated_rect = self.blit_rotate(self.w.window, self.arme, (self.x, self.y), (35, 0),
-                                 self.arme_degree_r(self.direction) + 90)
+                self.rotated_rect = Utils.blit_rotate(self.w.window, self.arme, (self.position['x'], self.position['y']), (35, 0),
+                                                     self.arme_degree_relatif(self.direction) + 90)
             else:
-                self.rotated_rect = self.blit_rotate(self.w.w, self.arme, (self.x, self.y), (-5, 0), self.arme_degree_relatif(self.direction) + 90)
+                self.rotated_rect = Utils.blit_rotate(self.w.window, self.arme, (self.position['x'], self.position['y']), (-5, 0), self.arme_degree_relatif(self.direction) + 90)
 
 
     def bouton_degainage(self, event):
