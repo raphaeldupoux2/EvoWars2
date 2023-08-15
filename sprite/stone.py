@@ -13,12 +13,13 @@ class Stone:
 
     def load_image(self):
         liste_image_path = ["picture/pierre/pierre.png",
+                            "picture/pierre/pierre2.png",
                             "picture/pierre/pierre3.png"]
         image_path = random.choice(liste_image_path)
         image_origin = pygame.image.load(image_path).convert_alpha()
         image = pygame.transform.scale(image_origin, (self.largeur, self.longueur))
         flipped_image = pygame.transform.flip(image, random.choice([True, False]), random.choice([True, False]))
-        return flipped_image
+        return image
 
     def affiche_png(self):
         self.w.window.blit(self.image, (self.x, self.y))

@@ -1,10 +1,10 @@
-from arbre import Arbre
+from sprite.arbre import Arbre
 from controle import Controle
 from player.player import Player
-from stone import Stone
-from terrain_tennis import TerrainTennis
+from sprite.stone import Stone
+from sprite.terrain_tennis import TerrainTennis
 from window import Window
-from projectile import Projectile
+from sprite.projectile import Projectile
 
 
 class GameInstance:

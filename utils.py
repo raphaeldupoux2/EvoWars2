@@ -12,6 +12,12 @@ class Utils:
 
     @staticmethod
     def angle_entre(position1: dict, position2: dict):
+        """
+
+        :param position1:
+        :param position2:
+        :return: angle en radian
+        """
         return math.atan2(position2['y'] - position1['y'], position2['x'] - position1['x'])
 
     @staticmethod

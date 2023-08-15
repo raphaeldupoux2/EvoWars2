@@ -88,8 +88,8 @@ class PlayerBase:
 
     def vel(self):
         vel = Utils.distance_between(self.position, Utils.curseur()) / 20
-        if vel > 2:
-            return 2 + self.vit_modif
+        if vel > 4:
+            return 4 + self.vit_modif
         return vel
 
     def affiche_skin(self):

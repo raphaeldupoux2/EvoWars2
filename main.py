@@ -1,7 +1,6 @@
 import pygame
 import time
 from game_instance import GameInstance
-from projectile import Projectile
 from utils import Utils
 
 pygame.init()
@@ -51,13 +50,18 @@ while running:
         # print(game.player.physique[0].arme_degree_r(game.player.physique[0].curseur))
         game.player.physique[0].color = (255, 0, 0)
         projectile_move = True
-        direction = game.player.physique[0].arme_degree_relatif(Utils.curseur())
+        if game.player.physique[0].coup == "coup droit":
+            direction = game.player.physique[0].arme_degree_relatif(Utils.curseur()) + 90
+        elif game.player.physique[0].coup == "revert":
+            direction = game.player.physique[0].arme_degree_relatif(Utils.curseur()) - 90
+        game.projectile.angle = direction
 
     else:
         game.player.physique[0].color = (50, 50, 90)
 
     if projectile_move:
-        game.projectile.move_to(direction)
+
+        game.projectile.move_to()
 
     pygame.display.flip()
 

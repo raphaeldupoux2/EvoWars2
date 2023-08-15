@@ -1,7 +1,7 @@
 import pygame
 
 
-class Arbre1:
+class Arbre:
     def __init__(self, window, x, y):
         self.w = window
         self.x = x
@@ -32,7 +32,7 @@ class Arbre1:
         self.affiche_png()
 
 
-class Arbre:
+class Arbre1:
     couleur_tronc = (112, 93, 72)
     couleur_feuille = (50, 200, 90)
     coefx_arbre_hautdroit, coefy_arbre_hautdroit = 326 / 500, 103 / 500
@@ -47,7 +47,7 @@ class Arbre:
         self.feuille_radius = self.largeur_arbre * 50 / 140
 
     def load_image(self):
-        image_path = "picture/arbre/arbres.png"
+        image_path = "../picture/arbre/arbres.png"
         image_origin = pygame.image.load(image_path)  # .convert_alpha()
         largeur_png, hauteur_png = self.largeur_arbre * 500 / 140, self.hauteur_arbre * 500 / 140
         positionx_png_hautdroit, positiony_png_hautdroit = largeur_png * self.coefx_arbre_hautdroit, hauteur_png * self.coefy_arbre_hautdroit
