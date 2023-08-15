@@ -14,45 +14,12 @@ class GameInstance:
 
     def __init__(self):
         super().__init__()
-        self.window = Window()
+        self.w = Window()
         self.couleur_fond = GameInstance.couleur_sable
-        self.terrain: list = [TerrainTennis(self.window, 300, 100)]
-        self.arbre: list = [Arbre(self.window, 200, 500), Arbre(self.window, 80, 600), Arbre(self.window, 90, 400), Arbre(self.window, 850, 150)]#, Arbre(self.window, 110, 550), Arbre(self.window, 250, 520), Arbre(self.window, 150, 420), Arbre(self.window, 90, 620), Arbre(self.window, 800, 60)]
-        self.stone: list = [Stone(self.window, 800, 600), Stone(self.window, 830, 570), Stone(self.window, 860, 600)]
-        self.player = Player(self.window, self.arbre)
-        self.projectile = Projectile(self.window, self.window.WINDOW_WIDTH/2, self.window.WINDOW_HEIGHT/2)
+        self.terrain: list = [TerrainTennis(self.w, 300, 100)]
+        self.arbre: list = [Arbre(self.w, 200, 500), Arbre(self.w, 80, 600), Arbre(self.w, 90, 400), Arbre(self.w, 850, 150)]#, Arbre(self.window, 110, 550), Arbre(self.window, 250, 520), Arbre(self.window, 150, 420), Arbre(self.window, 90, 620), Arbre(self.window, 800, 60)]
+        self.stone: list = [Stone(self.w, 800, 600), Stone(self.w, 830, 570), Stone(self.w, 860, 600)]
+        self.player = Player(self.w, self.arbre)
+        self.projectile = Projectile(self.w, self.w.WINDOW_WIDTH/2, self.w.WINDOW_HEIGHT/2)
         self.controle = Controle()
         self.assombrir = [False, False, False]
-
-    @staticmethod
-    def luminosite_tournante(couleur_fond, vitesse_changement, assombrir):
-        if couleur_fond[0] >= 255:
-            assombrir[0] = True
-        if couleur_fond[1] >= 255:
-            assombrir[1] = True
-        if couleur_fond[2] >= 255:
-            assombrir[2] = True
-
-        if couleur_fond[0] <= 0:
-            assombrir[0] = False
-        if couleur_fond[1] <= 0:
-            assombrir[1] = False
-        if couleur_fond[2] <= 0:
-            assombrir[2] = False
-
-        if assombrir[0] is True:
-            couleur_fond = tuple(sum(i) for i in zip(couleur_fond, (-vitesse_changement, 0, 0)))
-        else:
-            couleur_fond = tuple(sum(i) for i in zip(couleur_fond, (vitesse_changement, 0, 0)))
-
-        if assombrir[1] is True:
-            couleur_fond = tuple(sum(i) for i in zip(couleur_fond, (0, -vitesse_changement, 0)))
-        else:
-            couleur_fond = tuple(sum(i) for i in zip(couleur_fond, (0, vitesse_changement, 0)))
-
-        if assombrir[2] is True:
-            couleur_fond = tuple(sum(i) for i in zip(couleur_fond, (0, 0, -vitesse_changement)))
-        else:
-            couleur_fond = tuple(sum(i) for i in zip(couleur_fond, (0, 0, vitesse_changement)))
-
-        return couleur_fond, assombrir
