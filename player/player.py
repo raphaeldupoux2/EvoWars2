@@ -51,9 +51,9 @@ class PlayerPhysique(PlayerBase):
             self.charge()
 
         # if self.is_in_control:
-        #     self.angle_mort(self.w.window, self.direction)
-        self.ligne_vision(60)
-        self.ligne_vision(-60)
+        #     self.angle_mort(self.w.window)
+        # self.ligne_vision(60)
+        # self.ligne_vision(-60)
 
         if self.arme_degainee:
             self.affiche_arme_x_y_inverse()
@@ -96,7 +96,7 @@ class PlayerSpirit(PlayerBase):
             self.charge()
 
         # if self.is_in_control:
-        #     self.angle_mort(self.w.window, self.direction)
+        #     self.angle_mort(self.w.window)
         self.ligne_vision(60)
         self.ligne_vision(-60)
 

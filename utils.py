@@ -29,11 +29,11 @@ class Utils:
         """
         Convertit un angle en un angle compris entre -180 et 180 degrés.
 
-        Arguments :
-        angle -- L'angle en degrés.
+        Args:
+            angle : L'angle en degrés.
 
-        Retourne :
-        L'angle normalisé en degrés.
+        Returns:
+            L'angle normalisé en degrés.
         """
 
         normalized_angle = angle % 360  # Calcul de l'angle modulo 360

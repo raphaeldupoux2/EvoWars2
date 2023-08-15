@@ -94,8 +94,8 @@ class PlayerBase:
 
     def affiche_skin(self):
         return pygame.draw.circle(self.w.window, self.color, [self.position['x'], self.position['y']], self.radius, 0), \
-               pygame.draw.circle(self.w.window, (0, 30, 55), [self.position['x'], self.position['y']], 100, 1), \
-               pygame.draw.circle(self.w.window, (0, 30, 55), [self.position['x'], self.position['y']], 110, 1)
+               # pygame.draw.circle(self.w.window, (0, 30, 55), [self.position['x'], self.position['y']], 100, 1), \
+               # pygame.draw.circle(self.w.window, (0, 30, 55), [self.position['x'], self.position['y']], 110, 1)
 
     # Fanatique
     def bouton_fanatique(self, event):
@@ -173,6 +173,7 @@ class PlayerBase:
         y4_d = y1_d + 1000 * math.cos(angle_d)
 
         # Dessiner les rectangles
+        print('yes')
         pygame.draw.polygon(window, (0, 0, 0), [(x1_g, y1_g), (x2_g, y2_g), (x3_g, y3_g), (x4_g, y4_g)])
         pygame.draw.polygon(window, (0, 0, 0), [(x1_d, y1_d), (x2_d, y2_d), (x3_d, y3_d), (x4_d, y4_d)])
 
@@ -241,14 +242,11 @@ class PlayerBase:
                 self.rotated_rect = Utils.blit_rotate(self.w.window, self.arme, (self.position['x'], self.position['y']), (-15, 0), self.arme_degree + 90)
         else:
             if self.coup == "coup droit":
-                self.rotated_rect = Utils.blit_rotate(self.w.window, self.arme, (self.position['x'], self.position['y']), (-5, 0),
-                                                     self.arme_degree_relatif(self.direction) + 90)
+                self.rotated_rect = Utils.blit_rotate(self.w.window, self.arme, (self.position['x'], self.position['y']), (-5, 0), self.arme_degree_relatif(self.direction) + 90)
             elif self.coup == "revert":
-                self.rotated_rect = Utils.blit_rotate(self.w.window, self.arme, (self.position['x'], self.position['y']), (35, 0),
-                                                     self.arme_degree_relatif(self.direction) + 90)
+                self.rotated_rect = Utils.blit_rotate(self.w.window, self.arme, (self.position['x'], self.position['y']), (35, 0), self.arme_degree_relatif(self.direction) + 90)
             else:
                 self.rotated_rect = Utils.blit_rotate(self.w.window, self.arme, (self.position['x'], self.position['y']), (-5, 0), self.arme_degree_relatif(self.direction) + 90)
-
 
     def bouton_degainage(self, event):
         if event.type == pygame.KEYDOWN:
