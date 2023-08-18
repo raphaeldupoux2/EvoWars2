@@ -1,5 +1,4 @@
 from sprite.arbre import Arbre
-from controle import Controle
 from player.player import Player
 from sprite.stone import Stone
 from sprite.terrain_tennis import TerrainTennis
@@ -22,7 +21,6 @@ class GameInstance:
         self.stone: list = [Stone(self.w, 800, 600), Stone(self.w, 830, 570), Stone(self.w, 860, 600)]
         self.player = Player(self.w, self.arbre)
         self.balle = [Projectile(self.w, self.w.WINDOW_WIDTH/2, self.w.WINDOW_HEIGHT/2, self.player.physique[0])]
-        self.controle = Controle()
         self.assombrir = [False, False, False]
 
     def fond(self):

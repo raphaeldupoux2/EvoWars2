@@ -13,8 +13,12 @@ class Projectile:
         self.color = (200, 200, 0)
         self.vel = 10
         self.radius = 10
-        self.angle = 180
+        self._direction = 180
         self.projectile_move = False
+
+    @property
+    def direction(self):
+        return Utils.normalize_angle(self._direction)
 
     def affiche_balle(self):
         pygame.draw.circle(self.w.window, self.color, [self.x, self.y], self.radius, 0)
@@ -22,16 +26,12 @@ class Projectile:
 
     def move_to(self):
         if self.projectile_move:
-            self.x += math.cos(self.angle * math.pi / 180) * self.vel
-            self.y += -math.sin(self.angle * math.pi / 180) * self.vel
-            if self.x <= 0:
-                self.angle -= 180
-            elif self.y <= 0:
-                self.angle -= 180
-            elif self.x >= self.w.WINDOW_WIDTH:
-                self.angle -= 180
-            elif self.y >= self.w.WINDOW_HEIGHT:
-                self.angle -= 180
+            self.x += math.cos(self._direction * math.pi / 180) * self.vel
+            self.y += -math.sin(self._direction * math.pi / 180) * self.vel
+            if self.x <= 0 or self.x >= self.w.WINDOW_WIDTH:
+                self._direction = 180 - self._direction
+            elif self.y <= 0 or self.y >= self.w.WINDOW_HEIGHT:
+                self._direction *= -1
 
     def contact_arme_player(self):
         if Utils.point_dans_rectangle_incline(self.x, self.y, self.player_affect.rotated_rect.centerx,
@@ -46,7 +46,7 @@ class Projectile:
                 direction = self.player_affect.arme_degree_relatif(Utils.curseur()) - 90
             else:
                 direction = 0
-            self.angle = direction
+            self._direction = direction
 
         else:
             self.player_affect.color = (50, 50, 90)
