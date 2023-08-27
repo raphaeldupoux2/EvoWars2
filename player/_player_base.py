@@ -213,6 +213,8 @@ class PlayerBase:
             return self.direction_charge
         elif self.etat_attaque == "coup":
             return self.direction_attaque
+        elif Utils.curseur() == {'x': 0, 'y': 0}:
+            return self.position
         else:
             return Utils.curseur()
 

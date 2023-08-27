@@ -24,16 +24,16 @@ class PlayerPhysique(PlayerBase):
                 self.is_in_control = not self.is_in_control
 
     def bouton(self, event):
-        if self.is_in_control:
-            if self.etat_attaque == "repos":
-                self.bouton_change_hand(event)
-                self.bouton_coup_epee(event)
+        # if self.is_in_control:
+        if self.etat_attaque == "repos":
+            self.bouton_change_hand(event)
+            self.bouton_coup_epee(event)
 
-            if self.anim_charge is False:
-                self.bouton_charge(event)
+        if self.anim_charge is False:
+            self.bouton_charge(event)
 
-            self.bouton_fanatique(event)
-            self.bouton_degainage(event)
+        self.bouton_fanatique(event)
+        self.bouton_degainage(event)
         self.bouton_change_in_controle(event)
 
     def comportement(self):
@@ -55,14 +55,16 @@ class PlayerPhysique(PlayerBase):
         # self.ligne_vision(60)
         # self.ligne_vision(-60)
 
+        self.w.window.blit(self.image, (self.position['x'] - self.longueur/2, self.position['y'] - self.largeur/2 - 50))  # affiche couronne
+
         if self.arme_degainee:
             self.affiche_arme_x_y_inverse()
 
-        self.bouge()
-        self.affiche_skin()
+        if self.is_in_control:
+            self.bouge()
+        # self.affiche_skin()
         Utils.affiche_curseur(self.w.window)
         # self.detection_collision_arme()
-        self.w.window.blit(self.image, (self.position['x'] - self.longueur/2, self.position['y'] - self.largeur/2 - 20))
 
 
 class PlayerSpirit(PlayerBase):

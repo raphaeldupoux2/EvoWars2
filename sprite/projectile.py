@@ -28,9 +28,9 @@ class Projectile:
         if self.projectile_move:
             self.x += math.cos(self._direction * math.pi / 180) * self.vel
             self.y += -math.sin(self._direction * math.pi / 180) * self.vel
-            if self.x <= 0 or self.x >= self.w.WINDOW_WIDTH:
+            if self.x <= 300 or self.x >= 700:
                 self._direction = 180 - self._direction
-            elif self.y <= 0 or self.y >= self.w.WINDOW_HEIGHT:
+            elif self.y <= 100 or self.y >= 600:
                 self._direction *= -1
 
     def contact_arme_player(self):
