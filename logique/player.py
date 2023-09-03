@@ -1,4 +1,4 @@
-from player._player_base import PlayerBase
+from logique._player_base import PlayerBase
 import pygame
 
 from utils import Utils
@@ -37,6 +37,8 @@ class PlayerPhysique(PlayerBase):
         self.bouton_change_in_controle(event)
 
     def comportement(self):
+        self.player.affiche()
+
         if self.etat_attaque == "repos":
             self.repositionnement()
             self.change_hand()
@@ -99,8 +101,8 @@ class PlayerSpirit(PlayerBase):
 
         # if self.is_in_control:
         #     self.angle_mort(self.w.window)
-        self.ligne_vision(60)
-        self.ligne_vision(-60)
+        # self.ligne_vision(60)
+        # self.ligne_vision(-60)
 
         if self.arme_degainee:
             self.affiche_arme()

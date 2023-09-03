@@ -1,7 +1,7 @@
 import pygame
 
 
-class Arbre:
+class AfficheArbre:
     def __init__(self, window, x, y):
         self.w = window
         self.x = x
@@ -9,30 +9,22 @@ class Arbre:
         self.largeur, self.hauteur = 190, 150
         self.tronc_radius = (self.largeur + self.hauteur) / 34
         self.feuille_radius = 50
+        self.image_path = "picture/arbre/arbre.png"
         self.image = self.load_image()
 
     def load_image(self):
-        image_path = "picture/arbre/arbre.png"
-        image_origin = pygame.image.load(image_path)  # .convert_alpha()
+        image_origin = pygame.image.load(self.image_path)  # .convert_alpha()
         image = pygame.transform.scale(image_origin, (self.largeur, self.hauteur))
         return image
-
-    def affiche_feuille(self):
-        return pygame.draw.circle(self.w.window, (50, 200, 90), [self.x, self.y], self.feuille_radius, 0)
-
-    def affiche_tronc(self):
-        return pygame.draw.circle(self.w.window, (88, 41, 0), [self.x, self.y], self.tronc_radius, 0)
 
     def affiche_png(self):
         self.w.window.blit(self.image, (self.x - self.largeur * 6 / 11, self.y - 7 / 8 * self.hauteur))
 
-    def comportement(self):
-        # self.affiche_feuille()
-        # self.affiche_tronc()
+    def affiche(self):
         self.affiche_png()
 
 
-class Arbre1:
+class AfficheArbre1:
     couleur_tronc = (112, 93, 72)
     couleur_feuille = (50, 200, 90)
     coefx_arbre_hautdroit, coefy_arbre_hautdroit = 326 / 500, 103 / 500

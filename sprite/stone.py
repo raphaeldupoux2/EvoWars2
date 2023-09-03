@@ -3,7 +3,7 @@ import random
 import pygame
 
 
-class Stone:
+class AfficheStone:
     def __init__(self, window, x, y):
         self.w = window
         self.x = x
@@ -24,5 +24,5 @@ class Stone:
     def affiche_png(self):
         self.w.window.blit(self.image, (self.x, self.y))
 
-    def comportement(self):
+    def affiche(self):
         self.affiche_png()

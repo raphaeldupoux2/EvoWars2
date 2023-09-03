@@ -4,7 +4,7 @@ import pygame
 from utils import Utils
 
 
-class Projectile:
+class AfficheProjectile:
     def __init__(self, window, x, y, player, liste_obstacle=None):
         self.w = window
         self.x = x

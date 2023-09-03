@@ -1,7 +1,7 @@
 import pygame
 
 
-class TerrainTennis:
+class AfficheTerrainTennis:
     def __init__(self, window, x, y):
         self.w = window
         self.x = x
@@ -19,3 +19,6 @@ class TerrainTennis:
         pygame.draw.rect(self.w.window, self.color_bande, (self.x, self.y, 400, self.largeur_bande))
         pygame.draw.rect(self.w.window, self.color_bande, (self.x, self.y + self.longueur - self.largeur_bande, 400, self.largeur_bande))
         pygame.draw.rect(self.w.window, self.color_bande, (self.x, self.y + self.longueur/2 - self.largeur_bande/2, 400, self.largeur_bande))
+
+    def affiche(self):
+        self.affiche_terrain()
