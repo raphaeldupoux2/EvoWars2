@@ -13,7 +13,6 @@ class GameInstance:
     FRAME_DURATION = 1 / FPS  # Calcul de la durée en secondes entre chaque frame
 
     def __init__(self):
-        super().__init__()
         self.w = Window()
         self.couleur_fond = GameInstance.couleur_sable
         self.terrain: list = [AfficheTerrainTennis(self.w, 300, 100)]

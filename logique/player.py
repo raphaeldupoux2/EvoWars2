@@ -37,7 +37,7 @@ class PlayerPhysique(PlayerBase):
         self.bouton_change_in_controle(event)
 
     def comportement(self):
-        self.player.affiche()
+        self.player.affiche_all()
 
         if self.etat_attaque == "repos":
             self.repositionnement()
@@ -64,7 +64,7 @@ class PlayerPhysique(PlayerBase):
 
         if self.is_in_control:
             self.bouge()
-        # self.affiche_skin()
+        self.affiche_skin()
         Utils.affiche_curseur(self.w.window)
         # self.detection_collision_arme()
 

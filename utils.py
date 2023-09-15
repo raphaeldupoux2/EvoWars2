@@ -11,14 +11,18 @@ class Utils:
                 'y': pygame.mouse.get_pos()[1]}
 
     @staticmethod
-    def angle_entre(position1: dict, position2: dict):
+    def angle_radian_entre(position1: dict, position2: dict):
         """
-
-        :param position1:
-        :param position2:
         :return: angle en radian
         """
         return math.atan2(position2['y'] - position1['y'], position2['x'] - position1['x'])
+
+    @staticmethod
+    def angle_degree_entre(position1: dict, position2: dict):
+        """
+        :return: angle en radian
+        """
+        return math.atan2(position2['y'] - position1['y'], position2['x'] - position1['x']) * 180 / math.pi
 
     @staticmethod
     def distance_between(objet1: dict, objet2: dict):
@@ -39,6 +43,10 @@ class Utils:
         normalized_angle = angle % 360  # Calcul de l'angle modulo 360
         if normalized_angle > 180:  # Si l'angle est supérieur à 180 degrés
             normalized_angle -= 360  # Soustraire 360 degrés pour obtenir un angle négatif
+
+        if normalized_angle < -180:  # Si l'angle est inférieur à -180 degrés
+            normalized_angle += 360  # Ajouter 360 degrés pour obtenir un angle positif dans la plage -180 à 180 degrés
+
         return normalized_angle
 
     @staticmethod

@@ -3,7 +3,7 @@ import pygame
 
 from sprite.personnage import AffichePlayer
 from utils import Utils
-from sprite.epee import Epee
+from sprite.epee import ImageEpee
 
 
 class PlayerBase:
@@ -13,27 +13,16 @@ class PlayerBase:
         self.position = {'x': self.w.WINDOW_WIDTH / 2, 'y': self.w.WINDOW_WIDTH / 2}
         self.radius = 20
         self.color = color
-        self.player = AffichePlayer(window, self.position)
-        self.epee = Epee(window, self.position)
-        self.arme_degainee = True
-        self.coup = ""
-        self.anim_charge = False
-        self.etat_attaque = "repos"
-        self.direction_charge = {'x': 0, 'y': 0}
-        self.direction_attaque = {'x': 0, 'y': 0}
+        self.player = AffichePlayer(window)
+        self.epee = ImageEpee(window, self.position)
+        self.maitrise = None
         self.vit_modif = 0
         self.solide = True
         self.liste_obstacle = liste_obstacle
         # self.projectile = [Projectile(500, 500)]
 
-        self.rotated_rect = None
-
-    def arme_degree_relatif(self, curseur):
-        """
-        :param curseur:
-        :return: angle de l'arme + angle de la direction du curseur
-        """
-        return -Utils.angle_entre(self.position, curseur) * 180 / math.pi + self.epee.degree
+    # def position_epee(self):
+    #     return self.position['x'] + 30, self.position['y'] + 50
 
     def touche(self, objet):
         distance = math.sqrt((objet.x - self.position['x']) ** 2 + (objet.y - self.position['y']) ** 2)
@@ -69,54 +58,9 @@ class PlayerBase:
 
     def affiche_skin(self):
         return pygame.draw.circle(self.w.window, self.color, [self.position['x'], self.position['y']], self.radius, 0), \
-               # pygame.draw.circle(self.w.window, (0, 30, 55), [self.position['x'], self.position['y']], 100, 1), \
-               # pygame.draw.circle(self.w.window, (0, 30, 55), [self.position['x'], self.position['y']], 110, 1)
+            # pygame.draw.circle(self.w.window, (0, 30, 55), [self.position['x'], self.position['y']], 100, 1), \
+        # pygame.draw.circle(self.w.window, (0, 30, 55), [self.position['x'], self.position['y']], 110, 1)
 
-    # Fanatique
-    def bouton_fanatique(self, event):
-        if event.type == pygame.KEYDOWN:
-            if pygame.key.get_focused() and pygame.key.get_pressed()[pygame.K_SPACE]:
-                if self.etat_attaque != "fanatique":
-                    self.etat_attaque = "fanatique"
-                else:
-                    self.etat_attaque = "repos"
-
-    def fanatique(self):
-        if self.coup == "coup droit":
-            self.epee.degree += 12
-        if self.coup == "revert":
-            self.epee.degree -= 12
-
-    # Coup
-    def bouton_coup_epee(self, event):
-        if self.epee.degree == -120 or self.epee.degree == 120:
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                self.etat_attaque = "coup"
-                self.direction_attaque = Utils.curseur()
-
-    def coup_epee(self):
-        if self.coup == "coup droit":
-            self.epee.degree += 12
-            if Utils.normalize_angle(self.epee.degree) >= 120:
-                self.etat_attaque = "repos"
-
-        elif self.coup == "revert":
-            self.epee.degree -= 12
-            if Utils.normalize_angle(self.epee.degree) <= -120:
-                self.etat_attaque = "repos"
-
-    def bouton_charge(self, event):
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_z:
-                self.anim_charge = True
-                self.direction_charge = Utils.curseur()
-                # self.vit_modif += 8
-
-    def charge(self):
-        if abs(self.position['x'] - self.direction_charge['x']) < 20 and abs(
-                self.position['y'] - self.direction_charge['y'] < 20):
-            self.anim_charge = False
-            # self.vit_modif -= 8
 
     # def ligne_vision(self, degree):
     #     angle = -Utils.angle_entre(self.position, Utils.curseur()) * 180 / math.pi - degree
@@ -124,8 +68,8 @@ class PlayerBase:
 
     def angle_mort(self, window):
         # Calculer les angles des deux bords du cône
-        angle_g = Utils.angle_entre(self.position, Utils.curseur()) - math.pi / 3
-        angle_d = Utils.angle_entre(self.position, Utils.curseur()) + math.pi / 3
+        angle_g = Utils.angle_degree_entre(self.position, Utils.curseur()) - math.pi / 3
+        angle_d = Utils.angle_degree_entre(self.position, Utils.curseur()) + math.pi / 3
 
         # Calculer les coordonnées des coins du rectangle gauche
         x1_g = self.position['x'] - 1000 * math.cos(angle_g)
@@ -152,38 +96,9 @@ class PlayerBase:
         pygame.draw.polygon(window, (0, 0, 0), [(x1_g, y1_g), (x2_g, y2_g), (x3_g, y3_g), (x4_g, y4_g)])
         pygame.draw.polygon(window, (0, 0, 0), [(x1_d, y1_d), (x2_d, y2_d), (x3_d, y3_d), (x4_d, y4_d)])
 
-    # Repos
-    def repositionnement(self):
-        if 120 > Utils.normalize_angle(self.epee.degree) > 0:
-            self.epee.degree += 3
-        elif -120 < Utils.normalize_angle(self.epee.degree) <= 0:
-            self.epee.degree -= 3
-        elif -180 < Utils.normalize_angle(self.epee.degree) < -125:
-            self.epee.degree += 3
-        elif 180 >= Utils.normalize_angle(self.epee.degree) > 125:
-            self.epee.degree -= 3
-        elif 125 >= Utils.normalize_angle(self.epee.degree) >= 120:
-            self.epee.degree = 120
-        elif -125 <= Utils.normalize_angle(self.epee.degree) <= -120:
-            self.epee.degree = -120
-
-    def change_hand(self):
-        if self.epee.degree == -120:
-            self.coup = "coup droit"
-        elif self.epee.degree == 120:
-            self.coup = "revert"
-
-    def bouton_change_hand(self, event):
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_a:
-                if self.epee.degree == -120:
-                    self.epee.degree = 120
-            if event.key == pygame.K_e:
-                if self.epee.degree == 120:
-                    self.epee.degree = -120
-
     @property
     def direction(self):
+        import pdb; pdb.set_trace()
         if self.anim_charge:
             return self.direction_charge
         elif self.etat_attaque == "coup":
@@ -192,43 +107,3 @@ class PlayerBase:
             return self.position
         else:
             return Utils.curseur()
-
-    def affiche_arme(self):
-        if self.etat_attaque == "fanatique":
-            if self.coup == "coup droit":
-                Utils.blit_rotate(self.w.window, self.epee.image, (self.position['x'], self.position['y']), (0, 20), self.epee.degree)
-            elif self.coup == "revert":
-                Utils.blit_rotate(self.w.window, self.epee.image, (self.position['x'], self.position['y']), (0, -10), self.epee.degree)
-            else:
-                Utils.blit_rotate(self.w.window, self.epee.image, (self.position['x'], self.position['y']), (0, 5), self.epee.degree)
-        else:
-            if self.coup == "coup droit":
-                Utils.blit_rotate(self.w.window, self.epee.image, (self.position['x'], self.position['y']), (0, 20), self.arme_degree_relatif(self.direction))
-            elif self.coup == "revert":
-                Utils.blit_rotate(self.w.window, self.epee.image, (self.position['x'], self.position['y']), (0, -10), self.arme_degree_relatif(self.direction))
-            else:
-                Utils.blit_rotate(self.w.window, self.epee.image, (self.position['x'], self.position['y']), (0, 5), self.arme_degree_relatif(self.direction))
-
-    def affiche_arme_x_y_inverse(self):
-        if self.etat_attaque == "fanatique":
-            if self.coup == "coup droit":
-                self.rotated_rect = Utils.blit_rotate(self.w.window, self.epee.image, (self.position['x'], self.position['y']), (-5, 0), self.epee.degree + 90)
-            elif self.coup == "revert":
-                self.rotated_rect = Utils.blit_rotate(self.w.window, self.epee.image, (self.position['x'], self.position['y']), (35, 0), self.epee.degree + 90)
-            else:
-                self.rotated_rect = Utils.blit_rotate(self.w.window, self.epee.image, (self.position['x'], self.position['y']), (-15, 0), self.epee.degree + 90)
-        else:
-            if self.coup == "coup droit":
-                self.rotated_rect = Utils.blit_rotate(self.w.window, self.epee.image, (self.position['x'], self.position['y']), (-5, 0), self.arme_degree_relatif(self.direction) + 90)
-            elif self.coup == "revert":
-                self.rotated_rect = Utils.blit_rotate(self.w.window, self.epee.image, (self.position['x'], self.position['y']), (35, 0), self.arme_degree_relatif(self.direction) + 90)
-            else:
-                self.rotated_rect = Utils.blit_rotate(self.w.window, self.epee.image, (self.position['x'], self.position['y']), (-5, 0), self.arme_degree_relatif(self.direction) + 90)
-
-    def bouton_degainage(self, event):
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_d:
-                if self.arme_degainee:
-                    self.arme_degainee = False
-                elif self.arme_degainee is False:
-                    self.arme_degainee = True
