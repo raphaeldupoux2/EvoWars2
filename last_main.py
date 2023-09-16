@@ -134,11 +134,9 @@ class Player:
         distance = math.sqrt((objet.x - self.x) ** 2 + (objet.y - self.y) ** 2)
         if distance <= self.radius + objet.tronc_radius:
             # self.color = (255, 0, 0)
-            # print("truuuue")
             return True
         else:
             self.color = (50, 90, 90)
-            # print("faaaalse")
             return False
 
     def bouge(self):
@@ -334,35 +332,6 @@ class Player:
             else:
                 self.blit_rotate(window, self.arme, (self.x, self.y), (0, 5), self.arme_degree_r(self.direction))
 
-    # def detect_ball(self):
-    #     arme
-    #     if arme.collidepoint(self.projectile[0].x, self.projectile[0].y)
-
-    def detection_collision_arme(self):
-        print(self.check_collision(self.arme.get_rect(), self.projectile[0]), [self.x, self.y], end=' ')
-
-    def check_collision(self, rect, circle):
-        rect_center_x = rect.x + rect.width / 2
-        rect_center_y = rect.y + rect.height / 2
-
-        circle_distance_x = abs(circle.x - rect_center_x)
-        circle_distance_y = abs(circle.y - rect_center_y)
-        # print(circle_distance_x, circle_distance_y, rect.width / 2 + circle.radius)
-
-        if circle_distance_x > (rect.width / 2 + circle.radius):
-            return False
-        if circle_distance_y > (rect.height / 2 + circle.radius):
-            return False
-
-        if circle_distance_x <= (rect.width / 2):
-            return True
-        if circle_distance_y <= (rect.height / 2):
-            return True
-
-        corner_distance_sq = (circle_distance_x - rect.width / 2) ** 2 + (circle_distance_y - rect.height / 2) ** 2
-
-        return corner_distance_sq <= (circle.radius ** 2)
-
     def bouton_degainage(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_d:
@@ -405,7 +374,7 @@ class Player:
 
         self.bouge()
         self.affiche_skin()
-        self.detection_collision_arme()
+        # self.detection_collision_arme()
 
 
 FPS = 60  # Définition du nombre de FPS souhaité
@@ -426,28 +395,21 @@ while running:
             running = False
         player.bouton(event)
 
-    # print(logique.touche(logique.obstacle[0]), logique.color)
-
     arbre.comportement()
     player.obstacle[0].affiche_skin_feuille()
     arbre2.comportement()
     arbre3.comportement()
     player.obstacle[0].affiche_skin_tronc()
 
-    # print(logique.etat_attaque, " ", logique.coup)
-
     terrain.affiche_terrain()
     player.projectile[0].affiche_skin()
     player.comportement()
 
-    # print(logique.touche(logique.obstacle[0]), logique.color)
     pygame.display.flip()
-    # print(logique.touche(logique.obstacle[0]), logique.color)
 
     # Mesure FPS
     end_time = time.monotonic()  # Mesure du temps de fin de boucle
     elapsed_time = end_time - start_time  # Calcul du temps écoulé depuis le début de la boucle
     time_to_wait = FRAME_DURATION - elapsed_time  # Calcul du temps d'attente avant la prochaine frame
-    # print(time_to_wait)
     if time_to_wait > 0:  # Si le temps d'attente est positif, on attend ce temps
         time.sleep(time_to_wait)

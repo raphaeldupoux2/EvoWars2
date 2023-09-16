@@ -38,7 +38,6 @@ y = []
 while True:
     m.behavior()
     # sleep()
-    print(m.lightsaber, m.sword, m.gun, m.ammunition)
     t = datetime.now().time()
     x.append(datetime.now())
     y.append(m.sword["actuel"])

@@ -20,8 +20,8 @@ class MaitriseEpee:
 
     def arme_degree_relatif(self, position, curseur):
         """
-        :param position:
-        :param curseur:
+        :param position: position du joueur
+        :param curseur: position du curseur
         :return: angle de l'arme + angle de la direction du curseur
         """
         return -Utils.angle_degree_entre(position, curseur) + self.arme_degree
@@ -124,6 +124,7 @@ class MaitriseEpee:
     def comportement(self, position):
         if self.etat_attaque == "repos":
             self.repositionnement()
+            self.direction_attaque = Utils.curseur()
             self.change_hand()
 
         elif self.etat_attaque == "coup":

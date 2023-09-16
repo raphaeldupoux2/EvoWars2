@@ -81,8 +81,8 @@ class Utils:
     @classmethod
     def move_to(cls, position1: dict, position2: dict, vitesse):
         if position1 != position2:
-            position1['x'] += math.cos(cls.angle_degree_entre(position1, position2)) * vitesse
-            position1['y'] += math.sin(cls.angle_degree_entre(position1, position2)) * vitesse
+            position1['x'] += math.cos(cls.angle_radian_entre(position1, position2)) * vitesse
+            position1['y'] += math.sin(cls.angle_radian_entre(position1, position2)) * vitesse
 
     @staticmethod
     def blit_rotate(window, image, pos, origin_pos, angle):

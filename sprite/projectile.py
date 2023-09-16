@@ -25,6 +25,7 @@ class AfficheProjectile:
         pygame.draw.circle(self.w.window, (0, 0, 0), [self.x, self.y], self.radius, 1)
 
     def move_to(self):
+        print(self.x, self.y)
         if self.projectile_move:
             self.x += math.cos(self._direction * math.pi / 180) * self.vel
             self.y += -math.sin(self._direction * math.pi / 180) * self.vel
@@ -36,13 +37,13 @@ class AfficheProjectile:
     def contact_arme_player(self):
         if Utils.point_dans_rectangle_incline(self.x, self.y, self.player_affect.maitrise["épée"].rotated_rect.centerx,
                                               self.player_affect.maitrise["épée"].rotated_rect.centery, 30, 100,
-                                              -self.player_affect.maitrise["épée"].arme_degree_relatif(self.player_affect.direction, Utils.curseur())) + 90:
+                                              -self.player_affect.maitrise["épée"].arme_degree_relatif(self.player_affect.position, Utils.curseur()) + 90):
             self.player_affect.color = (255, 0, 0)
             self.projectile_move = True
             if self.player_affect.maitrise["épée"].coup == "coup droit":
-                direction = self.player_affect.maitrise["épée"].arme_degree_relatif(self.player_affect.direction, Utils.curseur()) + 90
+                direction = self.player_affect.maitrise["épée"].arme_degree_relatif(self.player_affect.position, Utils.curseur()) + 90
             elif self.player_affect.maitrise["épée"].coup == "revert":
-                direction = self.player_affect.maitrise["épée"].arme_degree_relatif(self.player_affect.direction, Utils.curseur()) - 90
+                direction = self.player_affect.maitrise["épée"].arme_degree_relatif(self.player_affect.position, Utils.curseur()) - 90
             else:
                 direction = 0
             self._direction = direction

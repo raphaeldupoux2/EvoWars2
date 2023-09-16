@@ -27,11 +27,12 @@ class PlayerPhysique(PlayerBase):
         self.bouton_change_in_controle(event)
 
     def comportement(self):
+        # self.affiche_skin()
         for m in self.maitrise.values():
             m.comportement(self.position)
 
-        self.player.affiche_all(self.position)
-        self.item["couronne"].affiche_png()
+        self.player.comportement(self.position, Utils.angle_degree_entre(self.position, self.direction))
+        # self.item["couronne"].affiche_png()
 
         # if self.is_in_control:
         #     self.angle_mort(self.w.window)
@@ -40,7 +41,6 @@ class PlayerPhysique(PlayerBase):
 
         if self.is_in_control:
             self.bouge()
-        self.affiche_skin()
         Utils.affiche_curseur(self.w.window)
 
 

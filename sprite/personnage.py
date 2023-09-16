@@ -1,17 +1,22 @@
 import pygame
 
+from EvoWars2.utils import Utils
+
 
 class AffichePlayer:
 
-    largeur, longueur = 250, 125
+    largeur, hauteur = 250, 125
     image_path_origin = "picture/personnage/origin.png"
     image_path = "picture/personnage/personnage.png"
     postures = {
-        "face": pygame.Rect(largeur / 25, 0, largeur * 55 / 250, longueur),
-        "face-cote_droit": pygame.Rect(largeur * 70 / 250, 0, largeur * 55 / 250, longueur),
-        "cote_droit": pygame.Rect(largeur / 2, 0, largeur * 55 / 250, longueur),
-        "dos": pygame.Rect(largeur * 183 / 250, 0, largeur * 55 / 250, longueur)
+        "face": pygame.Rect(largeur / 25, 0, largeur * 55 / 250, hauteur),
+        "face-cote_droit": pygame.Rect(largeur * 70 / 250, 0, largeur * 55 / 250, hauteur),
+        "face-cote_gauche": pygame.Rect(largeur * 70 / 250, 0, largeur * 55 / 250, hauteur),
+        "cote_droit": pygame.Rect(largeur / 2, 0, largeur * 55 / 250, hauteur),
+        "cote_gauche": pygame.Rect(largeur / 2, 0, largeur * 55 / 250, hauteur),
+        "dos": pygame.Rect(largeur * 183 / 250, 0, largeur * 55 / 250, hauteur)
     }
+    l_perso, h_perso = 55, 125
 
     def __init__(self, window, posture='face'):
         self.w = window
@@ -24,24 +29,25 @@ class AffichePlayer:
         Args:
             angle_direction_mouvement en degré.
         """
-        if -10 < angle_direction_mouvement <= 20:
+        angle = - angle_direction_mouvement
+        if -10 < angle <= 40:
             return "cote_droit"
-        elif 160 <= angle_direction_mouvement <= 180 or -180 <= angle_direction_mouvement < -170:
+        elif 140 <= angle <= 180 or -180 <= angle < -170:
             return "cote_gauche"
-        elif 20 < angle_direction_mouvement < 160:
+        elif 40 < angle < 140:
             return "dos"
-        elif -50 < angle_direction_mouvement <= -10:
+        elif -60 < angle <= -10:
             return "face-cote_droit"
-        elif -170 <= angle_direction_mouvement < -130:
+        elif -170 <= angle < -120:
             return "face-cote_gauche"
-        elif -130 <= angle_direction_mouvement <= -50:
+        elif -120 <= angle <= -60:
             return "face"
         else:
             return "face"
 
     def _load_image(self):
         image_origin = pygame.image.load(self.image_path).convert_alpha()
-        image = pygame.transform.scale(image_origin, (self.largeur, self.longueur))
+        image = pygame.transform.scale(image_origin, (self.largeur, self.hauteur))
         cropped_rect = self.postures[self.posture]
         cropped_image = image.subsurface(cropped_rect)
         if self.posture == "cote_gauche" or self.posture == "face-cote_gauche":
@@ -55,10 +61,10 @@ class AffichePlayer:
             self.image = self._load_image()
 
     def affiche_png(self, position: dict):
-        self.w.window.blit(self.image, (position['x'] - 30, position['y'] - 50))
+        self.w.window.blit(self.image, (position['x'] - self.l_perso/2, position['y'] - self.h_perso*50/125))
 
     def affiche_zone_png(self, position: dict):
-        pygame.draw.rect(self.w.window, (0, 150, 0), (position['x'] - 30, position['y'] - 50, 55, 125))
+        pygame.draw.rect(self.w.window, (0, 150, 0), (position['x'] - self.l_perso/2, position['y'] - 50, self.l_perso, self.h_perso))
 
     def affiche_all(self, position: dict):
         self.affiche_zone_png(position)
