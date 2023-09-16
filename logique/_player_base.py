@@ -1,28 +1,28 @@
 import math
 import pygame
 
-from sprite.personnage import AffichePlayer
-from utils import Utils
-from sprite.epee import ImageEpee
+from EvoWars2.sprite.personnage import AffichePlayer
+from EvoWars2.utils import Utils
+from EvoWars2.sprite.epee import ImageEpee
+from .maitrise import MaitriseEpee, MaitriseCharge
+from EvoWars2.sprite.couronne import AfficheCouronne
 
 
 class PlayerBase:
-    def __init__(self, window, liste_obstacle, color=(50, 50, 90), is_in_control=True):
-        self.is_in_control = is_in_control
+    def __init__(self, window, liste_obstacle, color=(50, 50, 90)):
         self.w = window
         self.position = {'x': self.w.WINDOW_WIDTH / 2, 'y': self.w.WINDOW_WIDTH / 2}
         self.radius = 20
         self.color = color
         self.player = AffichePlayer(window)
-        self.epee = ImageEpee(window, self.position)
-        self.maitrise = None
+        self.item = {"arme": ImageEpee(window, self.position),
+                     "couronne": AfficheCouronne(window, self.position)}
+        self.maitrise = {"épée": MaitriseEpee(window, self.item["arme"].image),
+                         "charge": MaitriseCharge()}
         self.vit_modif = 0
         self.solide = True
         self.liste_obstacle = liste_obstacle
         # self.projectile = [Projectile(500, 500)]
-
-    # def position_epee(self):
-    #     return self.position['x'] + 30, self.position['y'] + 50
 
     def touche(self, objet):
         distance = math.sqrt((objet.x - self.position['x']) ** 2 + (objet.y - self.position['y']) ** 2)
@@ -61,9 +61,8 @@ class PlayerBase:
             # pygame.draw.circle(self.w.window, (0, 30, 55), [self.position['x'], self.position['y']], 100, 1), \
         # pygame.draw.circle(self.w.window, (0, 30, 55), [self.position['x'], self.position['y']], 110, 1)
 
-
     # def ligne_vision(self, degree):
-    #     angle = -Utils.angle_entre(self.position, Utils.curseur()) * 180 / math.pi - degree
+    #     angle = -Utils.angle_degree_entre(self.position, Utils.curseur()) * 180 / math.pi - degree
     #     Utils.blit_rotate(self.w.window, self.ligne, (self.position['x'], self.position['y']), (0, 0.5), angle)
 
     def angle_mort(self, window):
@@ -92,17 +91,15 @@ class PlayerBase:
         y4_d = y1_d + 1000 * math.cos(angle_d)
 
         # Dessiner les rectangles
-        print('yes')
         pygame.draw.polygon(window, (0, 0, 0), [(x1_g, y1_g), (x2_g, y2_g), (x3_g, y3_g), (x4_g, y4_g)])
         pygame.draw.polygon(window, (0, 0, 0), [(x1_d, y1_d), (x2_d, y2_d), (x3_d, y3_d), (x4_d, y4_d)])
 
     @property
     def direction(self):
-        import pdb; pdb.set_trace()
-        if self.anim_charge:
-            return self.direction_charge
-        elif self.etat_attaque == "coup":
-            return self.direction_attaque
+        if self.maitrise["charge"].anim_charge:
+            return self.maitrise["charge"].direction_charge
+        elif self.maitrise["épée"].etat_attaque == "coup":
+            return self.maitrise["épée"].direction_attaque
         elif Utils.curseur() == {'x': 0, 'y': 0}:
             return self.position
         else:

@@ -34,16 +34,15 @@ class AfficheProjectile:
                 self._direction *= -1
 
     def contact_arme_player(self):
-        if Utils.point_dans_rectangle_incline(self.x, self.y, self.player_affect.rotated_rect.centerx,
-                                              self.player_affect.rotated_rect.centery, 30, 100,
-                                              -self.player_affect.arme_degree_relatif(
-                                                      self.player_affect.direction) + 90):
+        if Utils.point_dans_rectangle_incline(self.x, self.y, self.player_affect.maitrise["épée"].rotated_rect.centerx,
+                                              self.player_affect.maitrise["épée"].rotated_rect.centery, 30, 100,
+                                              -self.player_affect.maitrise["épée"].arme_degree_relatif(self.player_affect.direction, Utils.curseur())) + 90:
             self.player_affect.color = (255, 0, 0)
             self.projectile_move = True
-            if self.player_affect.coup == "coup droit":
-                direction = self.player_affect.arme_degree_relatif(Utils.curseur()) + 90
-            elif self.player_affect.coup == "revert":
-                direction = self.player_affect.arme_degree_relatif(Utils.curseur()) - 90
+            if self.player_affect.maitrise["épée"].coup == "coup droit":
+                direction = self.player_affect.maitrise["épée"].arme_degree_relatif(self.player_affect.direction, Utils.curseur()) + 90
+            elif self.player_affect.maitrise["épée"].coup == "revert":
+                direction = self.player_affect.maitrise["épée"].arme_degree_relatif(self.player_affect.direction, Utils.curseur()) - 90
             else:
                 direction = 0
             self._direction = direction

@@ -113,6 +113,28 @@ class MaitriseEpee:
             else:
                 self.rotated_rect = Utils.blit_rotate(self.w.window, self.image_arme, (position['x'], position['y']), (-5, 0), self.arme_degree_relatif(position, self.direction_attaque) + 90)
 
+    def bouton(self, event):
+        if self.etat_attaque == "repos":
+            self.bouton_change_hand(event)
+            self.bouton_coup_epee(event)
+
+        self.bouton_fanatique(event)
+        self.bouton_degainage(event)
+
+    def comportement(self, position):
+        if self.etat_attaque == "repos":
+            self.repositionnement()
+            self.change_hand()
+
+        elif self.etat_attaque == "coup":
+            self.coup_epee()
+
+        elif self.etat_attaque == "fanatique":
+            self.fanatique()
+
+        if self.arme_degainee:
+            self.affiche_arme_x_y_inverse(position)
+
 
 class MaitriseCharge:
     def __init__(self):
@@ -126,8 +148,16 @@ class MaitriseCharge:
                 self.direction_charge = Utils.curseur()
                 # self.vit_modif += 8
 
-    def charge(self):
-        if abs(self.position['x'] - self.direction_charge['x']) < 20 and abs(
-                self.position['y'] - self.direction_charge['y'] < 20):
+    def charge(self, position):
+        if abs(position['x'] - self.direction_charge['x']) < 20 and abs(
+               position['y'] - self.direction_charge['y'] < 20):
             self.anim_charge = False
             # self.vit_modif -= 8
+
+    def bouton(self, event):
+        if self.anim_charge is False:
+            self.bouton_charge(event)
+
+    def comportement(self, position):
+        if self.anim_charge:
+            self.charge(position)
