@@ -25,7 +25,6 @@ class AfficheProjectile:
         pygame.draw.circle(self.w.window, (0, 0, 0), [self.x, self.y], self.radius, 1)
 
     def move_to(self):
-        print(self.x, self.y)
         if self.projectile_move:
             self.x += math.cos(self._direction * math.pi / 180) * self.vel
             self.y += -math.sin(self._direction * math.pi / 180) * self.vel

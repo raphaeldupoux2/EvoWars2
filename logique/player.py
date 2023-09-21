@@ -1,4 +1,4 @@
-from ._player_base import PlayerBase
+from EvoWars2.logique._player_base import PlayerBase
 import pygame
 
 from EvoWars2.utils import Utils
@@ -27,15 +27,15 @@ class PlayerPhysique(PlayerBase):
         self.bouton_change_in_controle(event)
 
     def comportement(self):
+        if self.is_in_control:
+            self.angle_mort(self.w.window)
         # self.affiche_skin()
         for m in self.maitrise.values():
             m.comportement(self.position)
 
         self.player.comportement(self.position, Utils.angle_degree_entre(self.position, self.direction))
-        # self.item["couronne"].affiche_png()
+        self.item["couronne"].affiche_png()
 
-        # if self.is_in_control:
-        #     self.angle_mort(self.w.window)
         # self.ligne_vision(60)
         # self.ligne_vision(-60)
 

@@ -97,7 +97,7 @@ class MaitriseEpee:
         elif -125 <= self.arme_degree <= -120:
             self.arme_degree = -120
 
-    def affiche_arme_x_y_inverse(self, position):
+    def affiche_arme(self, position):
         if self.etat_attaque == "fanatique":
             if self.coup == "coup droit":
                 self.rotated_rect = Utils.blit_rotate(self.w.window, self.image_arme, (position['x'], position['y']), (-5, 0), self.arme_degree + 90)
@@ -122,6 +122,7 @@ class MaitriseEpee:
         self.bouton_degainage(event)
 
     def comportement(self, position):
+        self.normalize_arme_degree()
         if self.etat_attaque == "repos":
             self.repositionnement()
             self.direction_attaque = Utils.curseur()
@@ -134,7 +135,7 @@ class MaitriseEpee:
             self.fanatique()
 
         if self.arme_degainee:
-            self.affiche_arme_x_y_inverse(position)
+            self.affiche_arme(position)
 
 
 class MaitriseCharge:
@@ -150,8 +151,7 @@ class MaitriseCharge:
                 # self.vit_modif += 8
 
     def charge(self, position):
-        if abs(position['x'] - self.direction_charge['x']) < 20 and abs(
-               position['y'] - self.direction_charge['y'] < 20):
+        if abs(position['x'] - self.direction_charge['x']) < 20 and abs(position['y'] - self.direction_charge['y']) < 20:
             self.anim_charge = False
             # self.vit_modif -= 8
 
