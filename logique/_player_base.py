@@ -91,8 +91,8 @@ class PlayerBase:
         y4_d = y1_d + 1000 * math.cos(angle_d)
 
         # Dessiner les rectangles
-        pygame.draw.polygon(window, (230, 230, 230), [(x1_g, y1_g), (x2_g, y2_g), (x3_g, y3_g), (x4_g, y4_g)])
-        pygame.draw.polygon(window, (230, 230, 230), [(x1_d, y1_d), (x2_d, y2_d), (x3_d, y3_d), (x4_d, y4_d)])
+        pygame.draw.polygon(window, (0, 0, 0), [(x1_g, y1_g), (x2_g, y2_g), (x3_g, y3_g), (x4_g, y4_g)])
+        pygame.draw.polygon(window, (0, 0, 0), [(x1_d, y1_d), (x2_d, y2_d), (x3_d, y3_d), (x4_d, y4_d)])
 
     @property
     def direction(self):

@@ -27,8 +27,8 @@ class PlayerPhysique(PlayerBase):
         self.bouton_change_in_controle(event)
 
     def comportement(self):
-        if self.is_in_control:
-            self.angle_mort(self.w.window)
+        # if self.is_in_control:
+        #     self.angle_mort(self.w.window)
         # self.affiche_skin()
         for m in self.maitrise.values():
             m.comportement(self.position)

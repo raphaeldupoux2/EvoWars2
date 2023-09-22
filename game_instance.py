@@ -1,7 +1,7 @@
 import pygame
 
 from EvoWars2.sprite.feu_de_camp import AfficheCampFire
-from EvoWars2.sprite.fond import Fond
+from EvoWars2.sprite.fond import Fond, EtaleHerbe
 from sprite.arbre import AfficheArbre
 from EvoWars2.logique.player import Player
 from sprite.stone import AfficheStone
@@ -25,6 +25,7 @@ class GameInstance:
         self.arme: list = []
         self.player = Player(self.w, self.arbre)
         self.balle: list = [AfficheProjectile(self.w, self.w.width / 2, self.w.height / 2, self.player.physique[0])]
+        self.etale_herbe = EtaleHerbe(self.w)
 
     def exit(self, event):
         if event.type == pygame.QUIT:
@@ -43,6 +44,7 @@ class GameInstance:
 
     def ordre_affiche(self):
         self.fond.changement_de_fond()
+        self.etale_herbe.comportement()
         # for spirit in self.player.spirit:
         #     spirit.color = self.fond.couleur_fond
         for terrain in self.terrain:

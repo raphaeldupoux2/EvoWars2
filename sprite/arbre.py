@@ -6,6 +6,29 @@ class AfficheArbre:
         self.w = window
         self.x = x
         self.y = y
+        self.largeur, self.hauteur = 200, 200
+        self.tronc_radius = (self.largeur + self.hauteur) / 34
+        self.feuille_radius = 50
+        self.image_path = "picture/arbre/grand_arbre.png"
+        self.image = self.load_image()
+
+    def load_image(self):
+        image_origin = pygame.image.load(self.image_path)  # .convert_alpha()
+        image = pygame.transform.scale(image_origin, (self.largeur, self.hauteur))
+        return image
+
+    def affiche_png(self):
+        self.w.window.blit(self.image, (self.x - self.largeur * 6 / 11, self.y - 7 / 8 * self.hauteur))
+
+    def affiche(self):
+        self.affiche_png()
+
+
+class AfficheArbre12:
+    def __init__(self, window, x, y):
+        self.w = window
+        self.x = x
+        self.y = y
         self.largeur, self.hauteur = 190, 150
         self.tronc_radius = (self.largeur + self.hauteur) / 34
         self.feuille_radius = 50

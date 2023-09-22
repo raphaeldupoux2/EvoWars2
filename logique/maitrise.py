@@ -9,7 +9,9 @@ class MaitriseEpee:
         self.image_arme = image_arme
         self.arme_degainee = True
         self.coup = ""
+        self.vit_coup = 12
         self.etat_attaque = "repos"
+        self.vit_repos = 1
         self.arme_degree = 0
         self.direction_attaque = {'x': 0, 'y': 0}
         self.rotated_rect = None
@@ -37,9 +39,9 @@ class MaitriseEpee:
 
     def fanatique(self):
         if self.coup == "coup droit":
-            self.arme_degree += 12
+            self.arme_degree += self.vit_coup
         if self.coup == "revert":
-            self.arme_degree -= 12
+            self.arme_degree -= self.vit_coup
 
     # Coup
     def bouton_coup_epee(self, event):
@@ -50,12 +52,12 @@ class MaitriseEpee:
 
     def coup_epee(self):
         if self.coup == "coup droit":
-            self.arme_degree += 12
+            self.arme_degree += self.vit_coup
             if self.arme_degree >= 120:
                 self.etat_attaque = "repos"
 
         elif self.coup == "revert":
-            self.arme_degree -= 12
+            self.arme_degree -= self.vit_coup
             if self.arme_degree <= -120:
                 self.etat_attaque = "repos"
 
@@ -85,13 +87,13 @@ class MaitriseEpee:
     # Repos
     def repositionnement(self):
         if 120 > self.arme_degree > 0:
-            self.arme_degree += 3
+            self.arme_degree += self.vit_repos
         elif -120 < self.arme_degree <= 0:
-            self.arme_degree -= 3
+            self.arme_degree -= self.vit_repos
         elif -180 < self.arme_degree < -125:
-            self.arme_degree += 3
+            self.arme_degree += self.vit_repos
         elif 180 >= self.arme_degree > 125:
-            self.arme_degree -= 3
+            self.arme_degree -= self.vit_repos
         elif 125 >= self.arme_degree >= 120:
             self.arme_degree = 120
         elif -125 <= self.arme_degree <= -120:
@@ -104,14 +106,14 @@ class MaitriseEpee:
             elif self.coup == "revert":
                 self.rotated_rect = Utils.blit_rotate(self.w.window, self.image_arme, (position['x'], position['y']), (35, 0), self.arme_degree + 90)
             else:
-                self.rotated_rect = Utils.blit_rotate(self.w.window, self.image_arme, (position['x'], position['y']), (-15, 0), self.arme_degree + 90)
+                self.rotated_rect = Utils.blit_rotate(self.w.window, self.image_arme, (position['x'], position['y']), (15, 0), self.arme_degree + 90)
         else:
             if self.coup == "coup droit":
                 self.rotated_rect = Utils.blit_rotate(self.w.window, self.image_arme, (position['x'], position['y']), (-5, 0), self.arme_degree_relatif(position, self.direction_attaque) + 90)
             elif self.coup == "revert":
                 self.rotated_rect = Utils.blit_rotate(self.w.window, self.image_arme, (position['x'], position['y']), (35, 0), self.arme_degree_relatif(position, self.direction_attaque) + 90)
             else:
-                self.rotated_rect = Utils.blit_rotate(self.w.window, self.image_arme, (position['x'], position['y']), (-5, 0), self.arme_degree_relatif(position, self.direction_attaque) + 90)
+                self.rotated_rect = Utils.blit_rotate(self.w.window, self.image_arme, (position['x'], position['y']), (15, 0), self.arme_degree_relatif(position, self.direction_attaque) + 90)
 
     def bouton(self, event):
         if self.etat_attaque == "repos":

@@ -7,7 +7,7 @@ class AfficheCampFire:
         self.x = x
         self.y = y
         self.image_path = "picture/feu_de_camp.png"
-        self.largeur, self.hauteur = 100, 100
+        self.largeur, self.hauteur = 75, 75
         self.image = self.load_image()
 
     def load_image(self):
