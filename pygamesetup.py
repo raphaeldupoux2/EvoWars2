@@ -18,7 +18,7 @@ class PygameSetUp:
         return pygame.display.set_caption(title)
 
     def window_dimension(self, width, height):
-        return pygame.display.set_mode((width, height))
+        return pygame.display.set_mode((width, height), pygame.RESIZABLE)
 
     def window_refresh(self):
         return pygame.display.flip()

@@ -19,7 +19,7 @@ class Image:
         self.image = self.load_image()
 
     def load_image(self):
-        image_origin = pygame.image.load(self.image_path)  # .convert_alpha()
+        image_origin = pygame.image.load(self.image_path).convert_alpha()
         image = pygame.transform.scale(image_origin, (self.width, self.height))
         return image
 

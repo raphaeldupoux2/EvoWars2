@@ -1,7 +1,8 @@
 import pygame
 
+from EvoWars2.picture.tools import Tools
 from EvoWars2.sprite.feu_de_camp import AfficheCampFire
-from EvoWars2.sprite.fond import Fond, EtaleHerbe
+from EvoWars2.sprite.fond import Fond, EtaleHerbe, Herbe, EtaleTerre
 from sprite.arbre import AfficheArbre
 from EvoWars2.logique.player import Player
 from sprite.stone import AfficheStone
@@ -26,6 +27,10 @@ class GameInstance:
         self.player = Player(self.w, self.arbre)
         self.balle: list = [AfficheProjectile(self.w, self.w.width / 2, self.w.height / 2, self.player.physique[0])]
         self.etale_herbe = EtaleHerbe(self.w)
+        self.etale_terre = EtaleTerre(self.w)
+
+        # h = Herbe(self.w)
+        # Tools.changer_couleur_image_and_save_it(h.image)
 
     def exit(self, event):
         if event.type == pygame.QUIT:
@@ -49,6 +54,7 @@ class GameInstance:
         #     spirit.color = self.fond.couleur_fond
         for terrain in self.terrain:
             terrain.affiche_terrain()
+        self.etale_terre.comportement()
         for feu in self.feu_de_camp:
             feu.affiche_png()
         # for spirit in self.player.spirit:

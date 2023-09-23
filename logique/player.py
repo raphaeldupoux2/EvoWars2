@@ -34,7 +34,7 @@ class PlayerPhysique(PlayerBase):
             m.comportement(self.position)
 
         self.player.comportement(self.position, Utils.angle_degree_entre(self.position, self.direction))
-        self.item["couronne"].affiche_png()
+        # self.item["couronne"].affiche_png()
 
         # self.ligne_vision(60)
         # self.ligne_vision(-60)

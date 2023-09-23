@@ -6,7 +6,7 @@ class AfficheArbre:
         self.w = window
         self.x = x
         self.y = y
-        self.largeur, self.hauteur = 200, 200
+        self.largeur, self.hauteur = 250, 250
         self.tronc_radius = (self.largeur + self.hauteur) / 34
         self.feuille_radius = 50
         self.image_path = "picture/arbre/grand_arbre.png"

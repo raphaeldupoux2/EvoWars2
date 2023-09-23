@@ -20,7 +20,7 @@ class Fond:
 
 
 class Herbe(Image):
-    def __init__(self, window, position, dimension):
+    def __init__(self, window, position=(0, 0), dimension=(150, 150)):
         super().__init__(window, position, (0, 0), dimension, 'picture/herbe.png')
 
 
@@ -33,8 +33,31 @@ class EtaleHerbe:
 
     def create_carre_herbe(self):
         for j in range(8):
-            for i in range(10):
+            for i in range(13):
                 self.liste_herbe.append(Herbe(self.window, (i * self.cote_carre, j * self.cote_carre), (self.cote_carre, self.cote_carre)))
+
+    def comportement(self):
+        for elem in self.liste_herbe:
+            elem.affiche_png()
+
+
+class TerreCorail(Image):
+    def __init__(self, window, position=(0, 0), dimension=(150, 150)):
+        super().__init__(window, position, (0, 0), dimension, 'picture/terre_corail.png')
+
+
+class EtaleTerre:
+    def __init__(self, window):
+        self.window = window
+        self.liste_herbe = []
+        self.largeur_rect = 190
+        self.longueur_rect = 160
+        self.create_carre_herbe()
+
+    def create_carre_herbe(self):
+        for j in range(3):
+            for i in range(2):
+                self.liste_herbe.append(TerreCorail(self.window, (i * self.largeur_rect + 310, j * self.longueur_rect + 110), (self.largeur_rect, self.longueur_rect)))
 
     def comportement(self):
         for elem in self.liste_herbe:
