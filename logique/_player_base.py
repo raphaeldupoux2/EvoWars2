@@ -11,7 +11,7 @@ from EvoWars2.sprite.couronne import AfficheCouronne
 class PlayerBase:
     def __init__(self, window, liste_obstacle, color=(50, 50, 90)):
         self.w = window
-        self.position = {'x': self.w.width / 2, 'y': self.w.height / 2}
+        self.position = {'x': self.w.width / 2, 'y': self.w.height *2/3}
         self.radius = 20
         self.color = color
         self.player = AffichePlayer(window)

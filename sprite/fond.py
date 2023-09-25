@@ -21,14 +21,14 @@ class Fond:
 
 class Herbe(Image):
     def __init__(self, window, position=(0, 0), dimension=(150, 150)):
-        super().__init__(window, position, (0, 0), dimension, 'picture/herbe.png')
+        super().__init__(window, position, (0, 0), dimension, 'picture/surface/herbe.png')
 
 
 class EtaleHerbe:
     def __init__(self, window):
         self.window = window
         self.liste_herbe = []
-        self.cote_carre = 150
+        self.cote_carre = 200
         self.create_carre_herbe()
 
     def create_carre_herbe(self):
@@ -43,7 +43,7 @@ class EtaleHerbe:
 
 class TerreCorail(Image):
     def __init__(self, window, position=(0, 0), dimension=(150, 150)):
-        super().__init__(window, position, (0, 0), dimension, 'picture/terre_corail.png')
+        super().__init__(window, position, (0, 0), dimension, 'picture/surface/terre_corail.png')
 
 
 class EtaleTerre:

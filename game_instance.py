@@ -2,13 +2,13 @@ import pygame
 
 from EvoWars2.picture.tools import Tools
 from EvoWars2.sprite.feu_de_camp import AfficheCampFire
-from EvoWars2.sprite.fond import Fond, EtaleHerbe, Herbe, EtaleTerre
+from EvoWars2.sprite.fond import Fond, EtaleHerbe, EtaleTerre
 from sprite.arbre import AfficheArbre
 from EvoWars2.logique.player import Player
 from sprite.stone import AfficheStone
 from sprite.terrain_tennis import AfficheTerrainTennis
 from pygamesetup import PygameSetUp
-from sprite.projectile import AfficheProjectile
+from sprite.projectile import AfficheProjectile, FireBall
 
 
 class GameInstance:
@@ -28,6 +28,7 @@ class GameInstance:
         self.balle: list = [AfficheProjectile(self.w, self.w.width / 2, self.w.height / 2, self.player.physique[0])]
         self.etale_herbe = EtaleHerbe(self.w)
         self.etale_terre = EtaleTerre(self.w)
+        self.fire_ball = FireBall(self.w, (self.w.width / 2, self.w.height / 2))
 
         # h = Herbe(self.w)
         # Tools.changer_couleur_image_and_save_it(h.image)

@@ -6,7 +6,7 @@ from EvoWars2.utils import Utils
 class AffichePlayer:
 
     largeur, hauteur = 250, 125
-    image_path_origin = "picture/personnage/origin.png"
+    image_path_origin = "picture/personnage/origin_redimension.png"
     image_path = "picture/personnage/personnage.png"
     postures = {
         "face": pygame.Rect(largeur / 25, 0, largeur * 55 / 250, hauteur),
@@ -46,7 +46,7 @@ class AffichePlayer:
             return "face"
 
     def _load_image(self):
-        image_origin = pygame.image.load(self.image_path).convert_alpha()
+        image_origin = pygame.image.load(self.image_path_origin).convert_alpha()
         image = pygame.transform.scale(image_origin, (self.largeur, self.hauteur))
         cropped_rect = self.postures[self.posture]
         cropped_image = image.subsurface(cropped_rect)
