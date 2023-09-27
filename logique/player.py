@@ -5,14 +5,14 @@ from EvoWars2.utils import Utils
 
 
 class Player:
-    def __init__(self, window, liste_obstacle):
-        self.physique = [PlayerPhysique(window, liste_obstacle)]
+    def __init__(self, window, position: tuple, liste_obstacle):
+        self.physique = [PlayerPhysique(window, position, liste_obstacle)]
         self.spirit = []  # [PlayerSpirit(window)]
 
 
 class PlayerPhysique(PlayerBase):
-    def __init__(self, window, liste_obstacle):
-        super().__init__(window, liste_obstacle, color=(50, 50, 90))
+    def __init__(self, window, position, liste_obstacle):
+        super().__init__(window, position, liste_obstacle, color=(50, 50, 90))
         self.is_in_control = True
 
     def bouton_change_in_controle(self, event):
@@ -31,9 +31,9 @@ class PlayerPhysique(PlayerBase):
         #     self.angle_mort(self.w.window)
         # self.affiche_skin()
         for m in self.maitrise.values():
-            m.comportement(self.position)
+            m.comportement((self.x, self.y))
 
-        self.player.comportement(self.position, Utils.angle_degree_entre(self.position, self.direction))
+        self.player.comportement((self.x, self.y), Utils.angle_degree_entre((self.x, self.y), self.direction))
         # self.item["couronne"].affiche_png()
 
         # self.ligne_vision(60)

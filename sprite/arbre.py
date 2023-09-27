@@ -2,10 +2,9 @@ import pygame
 
 
 class AfficheArbre:
-    def __init__(self, window, x, y):
+    def __init__(self, window, position: tuple):
         self.w = window
-        self.x = x
-        self.y = y
+        self.x, self.y = position
         self.largeur, self.hauteur = 250, 250
         self.tronc_radius = (self.largeur + self.hauteur) / 34
         self.feuille_radius = 50
@@ -20,7 +19,7 @@ class AfficheArbre:
     def affiche_png(self):
         self.w.window.blit(self.image, (self.x - self.largeur * 6 / 11, self.y - 7 / 8 * self.hauteur))
 
-    def affiche(self):
+    def comportement(self):
         self.affiche_png()
 
 

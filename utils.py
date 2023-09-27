@@ -7,26 +7,25 @@ class Utils:
 
     @staticmethod
     def curseur():
-        return {'x': pygame.mouse.get_pos()[0],
-                'y': pygame.mouse.get_pos()[1]}
+        return pygame.mouse.get_pos()
 
     @staticmethod
-    def angle_radian_entre(position1: dict, position2: dict):
+    def angle_radian_entre(position1: tuple, position2: tuple):
         """
         :return: angle en radian
         """
-        return math.atan2(position2['y'] - position1['y'], position2['x'] - position1['x'])
+        return math.atan2(position2[1] - position1[1], position2[0] - position1[0])
 
     @staticmethod
-    def angle_degree_entre(position1: dict, position2: dict):
+    def angle_degree_entre(position1: tuple, position2: tuple):
         """
         :return: angle en radian
         """
-        return math.atan2(position2['y'] - position1['y'], position2['x'] - position1['x']) * 180 / math.pi
+        return math.atan2(position2[1] - position1[1], position2[0] - position1[0]) * 180 / math.pi
 
     @staticmethod
-    def distance_between(objet1: dict, objet2: dict):
-        return math.sqrt((objet1['y'] - objet2['y']) ** 2 + (objet1['x'] - objet2['x']) ** 2)
+    def distance_between(objet1: tuple, objet2: tuple):
+        return math.sqrt((objet1[1] - objet2[1]) ** 2 + (objet1[0] - objet2[0]) ** 2)
 
     @staticmethod
     def normalize_angle(angle):
@@ -79,10 +78,12 @@ class Utils:
         return abs(rotated_a) <= l / 2 and abs(rotated_b) <= h / 2
 
     @classmethod
-    def move_to(cls, position1: dict, position2: dict, vitesse):
+    def move_to(cls, position1: tuple, position2: tuple, vitesse):
+        new_posx, new_posy = position1
         if position1 != position2:
-            position1['x'] += math.cos(cls.angle_radian_entre(position1, position2)) * vitesse
-            position1['y'] += math.sin(cls.angle_radian_entre(position1, position2)) * vitesse
+            new_posx += math.cos(cls.angle_radian_entre(position1, position2)) * vitesse
+            new_posy += math.sin(cls.angle_radian_entre(position1, position2)) * vitesse
+        return new_posx, new_posy
 
     @staticmethod
     def blit_rotate(window, image, pos, origin_pos, angle):
@@ -118,7 +119,7 @@ class Utils:
 
     @classmethod
     def affiche_curseur(cls, window):
-        return pygame.draw.circle(window, (255, 0, 0), (cls.curseur()['x'], cls.curseur()['y']), 1)
+        return pygame.draw.circle(window, (255, 0, 0), (cls.curseur()[0], cls.curseur()[1]), 1)
 
     @staticmethod
     def luminosite_tournante(couleur_fond, vitesse_changement, assombrir):

@@ -2,10 +2,9 @@ import pygame
 
 
 class AfficheCampFire:
-    def __init__(self, window, x, y):
+    def __init__(self, window, position: tuple):
         self.w = window
-        self.x = x
-        self.y = y
+        self.x, self.y = position
         self.image_path = "picture/feu_de_camp.png"
         self.largeur, self.hauteur = 75, 75
         self.image = self.load_image()
@@ -23,4 +22,7 @@ class AfficheCampFire:
 
     def affiche(self):
         self.affiche_zone_png()
+        self.affiche_png()
+
+    def comportement(self):
         self.affiche_png()

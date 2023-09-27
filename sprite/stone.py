@@ -4,10 +4,9 @@ import pygame
 
 
 class AfficheStone:
-    def __init__(self, window, x, y):
+    def __init__(self, window, position: tuple):
         self.w = window
-        self.x = x
-        self.y = y
+        self.x, self.y = position
         self.largeur, self.longueur = 61, 44
         self.image = self.load_image()
 
@@ -24,5 +23,5 @@ class AfficheStone:
     def affiche_png(self):
         self.w.window.blit(self.image, (self.x, self.y))
 
-    def affiche(self):
+    def comportement(self):
         self.affiche_png()

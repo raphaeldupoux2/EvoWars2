@@ -61,10 +61,10 @@ class AffichePlayer:
             self.image = self._load_image()
 
     def affiche_png(self, position: dict):
-        self.w.window.blit(self.image, (position['x'] - self.l_perso/2, position['y'] - self.h_perso*50/125))
+        self.w.window.blit(self.image, (position[0] - self.l_perso/2, position[1] - self.h_perso*50/125))
 
     def affiche_zone_png(self, position: dict):
-        pygame.draw.rect(self.w.window, (0, 150, 0), (position['x'] - self.l_perso/2, position['y'] - 50, self.l_perso, self.h_perso))
+        pygame.draw.rect(self.w.window, (0, 150, 0), (position[0] - self.l_perso/2, position[1] - 50, self.l_perso, self.h_perso))
 
     def affiche_all(self, position: dict):
         self.affiche_zone_png(position)

@@ -38,10 +38,9 @@ class BouleDeFeu(Image):
 
 
 class AfficheProjectile:
-    def __init__(self, window, x, y, player, liste_obstacle=None):
+    def __init__(self, window, position: tuple, player, liste_obstacle=None):
         self.w = window
-        self.x = x
-        self.y = y
+        self.x, self.y = position
         self.skin = BouleDeFeu(window, (self.x, self.y))
         self.player_affect = player
         self.color = (200, 200, 0)
@@ -70,13 +69,13 @@ class AfficheProjectile:
     def contact_arme_player(self):
         if Utils.point_dans_rectangle_incline(self.x, self.y, self.player_affect.maitrise["épée"].rotated_rect.centerx,
                                               self.player_affect.maitrise["épée"].rotated_rect.centery, 30, 100,
-                                              -self.player_affect.maitrise["épée"].arme_degree_relatif(self.player_affect.position, Utils.curseur()) + 90):
+                                              -self.player_affect.maitrise["épée"].arme_degree_relatif((self.player_affect.x, self.player_affect.y), Utils.curseur()) + 90):
             self.player_affect.color = (255, 0, 0)
             self.projectile_move = True
             if self.player_affect.maitrise["épée"].coup == "coup droit":
-                direction = self.player_affect.maitrise["épée"].arme_degree_relatif(self.player_affect.position, Utils.curseur()) + 90
+                direction = self.player_affect.maitrise["épée"].arme_degree_relatif((self.player_affect.x, self.player_affect.y), Utils.curseur()) + 90
             elif self.player_affect.maitrise["épée"].coup == "revert":
-                direction = self.player_affect.maitrise["épée"].arme_degree_relatif(self.player_affect.position, Utils.curseur()) - 90
+                direction = self.player_affect.maitrise["épée"].arme_degree_relatif((self.player_affect.x, self.player_affect.y), Utils.curseur()) - 90
             else:
                 direction = 0
             self._direction = direction

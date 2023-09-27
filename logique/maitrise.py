@@ -13,14 +13,15 @@ class MaitriseEpee:
         self.etat_attaque = "repos"
         self.vit_repos = 1
         self.arme_degree = 0
-        self.direction_attaque = {'x': 0, 'y': 0}
+        self.direction_attaque = (0, 0)
         self.rotated_rect = None
+        self.affiche_arme((0, 0))
 
     def normalize_arme_degree(self):
         if Utils.normalize_angle(self.arme_degree) != self.arme_degree:
             self.arme_degree = Utils.normalize_angle(self.arme_degree)
 
-    def arme_degree_relatif(self, position, curseur):
+    def arme_degree_relatif(self, position: tuple, curseur: tuple):
         """
         :param position: position du joueur
         :param curseur: position du curseur
@@ -99,21 +100,21 @@ class MaitriseEpee:
         elif -125 <= self.arme_degree <= -120:
             self.arme_degree = -120
 
-    def affiche_arme(self, position):
+    def affiche_arme(self, position: tuple):
         if self.etat_attaque == "fanatique":
             if self.coup == "coup droit":
-                self.rotated_rect = Utils.blit_rotate(self.w.window, self.image_arme, (position['x'], position['y']), (-5, 0), self.arme_degree + 90)
+                self.rotated_rect = Utils.blit_rotate(self.w.window, self.image_arme, (position[0], position[1]), (-5, 0), self.arme_degree + 90)
             elif self.coup == "revert":
-                self.rotated_rect = Utils.blit_rotate(self.w.window, self.image_arme, (position['x'], position['y']), (35, 0), self.arme_degree + 90)
+                self.rotated_rect = Utils.blit_rotate(self.w.window, self.image_arme, (position[0], position[1]), (35, 0), self.arme_degree + 90)
             else:
-                self.rotated_rect = Utils.blit_rotate(self.w.window, self.image_arme, (position['x'], position['y']), (15, 0), self.arme_degree + 90)
+                self.rotated_rect = Utils.blit_rotate(self.w.window, self.image_arme, (position[0], position[1]), (15, 0), self.arme_degree + 90)
         else:
             if self.coup == "coup droit":
-                self.rotated_rect = Utils.blit_rotate(self.w.window, self.image_arme, (position['x'], position['y']), (-5, 0), self.arme_degree_relatif(position, self.direction_attaque) + 90)
+                self.rotated_rect = Utils.blit_rotate(self.w.window, self.image_arme, (position[0], position[1]), (-5, 0), self.arme_degree_relatif(position, self.direction_attaque) + 90)
             elif self.coup == "revert":
-                self.rotated_rect = Utils.blit_rotate(self.w.window, self.image_arme, (position['x'], position['y']), (35, 0), self.arme_degree_relatif(position, self.direction_attaque) + 90)
+                self.rotated_rect = Utils.blit_rotate(self.w.window, self.image_arme, (position[0], position[1]), (35, 0), self.arme_degree_relatif(position, self.direction_attaque) + 90)
             else:
-                self.rotated_rect = Utils.blit_rotate(self.w.window, self.image_arme, (position['x'], position['y']), (15, 0), self.arme_degree_relatif(position, self.direction_attaque) + 90)
+                self.rotated_rect = Utils.blit_rotate(self.w.window, self.image_arme, (position[0], position[1]), (15, 0), self.arme_degree_relatif(position, self.direction_attaque) + 90)
 
     def bouton(self, event):
         if self.etat_attaque == "repos":
@@ -142,7 +143,7 @@ class MaitriseEpee:
 
 class MaitriseCharge:
     def __init__(self):
-        self.direction_charge = {'x': 0, 'y': 0}
+        self.direction_charge = (0, 0)
         self.anim_charge = False
 
     def bouton_charge(self, event):
@@ -153,7 +154,7 @@ class MaitriseCharge:
                 # self.vit_modif += 8
 
     def charge(self, position):
-        if abs(position['x'] - self.direction_charge['x']) < 20 and abs(position['y'] - self.direction_charge['y']) < 20:
+        if abs(position[0] - self.direction_charge[0]) < 20 and abs(position[1] - self.direction_charge[1]) < 20:
             self.anim_charge = False
             # self.vit_modif -= 8
 
