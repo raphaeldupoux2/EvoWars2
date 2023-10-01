@@ -1,9 +1,10 @@
 import pygame
 
+from EvoWars2.pygamesetup import pygame_params
+
 
 class AfficheArbre:
-    def __init__(self, window, position: tuple):
-        self.w = window
+    def __init__(self, position: tuple):
         self.x, self.y = position
         self.largeur, self.hauteur = 250, 250
         self.tronc_radius = (self.largeur + self.hauteur) / 34
@@ -17,7 +18,7 @@ class AfficheArbre:
         return image
 
     def affiche_png(self):
-        self.w.window.blit(self.image, (self.x - self.largeur * 6 / 11, self.y - 7 / 8 * self.hauteur))
+        pygame_params.window.blit(self.image, (self.x - self.largeur * 6 / 11, self.y - 7 / 8 * self.hauteur))
 
     def comportement(self):
         self.affiche_png()

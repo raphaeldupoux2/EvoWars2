@@ -2,6 +2,8 @@ import math
 
 import pygame
 
+from EvoWars2.pygamesetup import pygame_params
+
 
 class Utils:
 
@@ -118,8 +120,8 @@ class Utils:
         return rotated_rect
 
     @classmethod
-    def affiche_curseur(cls, window):
-        return pygame.draw.circle(window, (255, 0, 0), (cls.curseur()[0], cls.curseur()[1]), 1)
+    def affiche_curseur(cls):
+        return pygame.draw.circle(pygame_params.window, (255, 0, 0), (cls.curseur()[0], cls.curseur()[1]), 1)
 
     @staticmethod
     def luminosite_tournante(couleur_fond, vitesse_changement, assombrir):

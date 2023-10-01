@@ -2,8 +2,7 @@ import pygame
 
 
 class AfficheCouronne:
-    def __init__(self, window, position):
-        self.w = window
+    def __init__(self, position):
         self.x, self.y = position
         self.image_path = "picture/crown.png"
         self.largeur, self.hauteur = 50, 50

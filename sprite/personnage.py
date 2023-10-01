@@ -1,6 +1,7 @@
 import pygame
 
 from EvoWars2.utils import Utils
+from EvoWars2.pygamesetup import pygame_params
 
 
 class AffichePlayer:
@@ -18,8 +19,7 @@ class AffichePlayer:
     }
     l_perso, h_perso = 55, 125
 
-    def __init__(self, window, posture='face'):
-        self.w = window
+    def __init__(self, posture='face'):
         self.posture = posture
         self.image = self._load_image()
 
@@ -61,10 +61,10 @@ class AffichePlayer:
             self.image = self._load_image()
 
     def affiche_png(self, position: dict):
-        self.w.window.blit(self.image, (position[0] - self.l_perso/2, position[1] - self.h_perso*50/125))
+        pygame_params.window.blit(self.image, (position[0] - self.l_perso/2, position[1] - self.h_perso*50/125))
 
     def affiche_zone_png(self, position: dict):
-        pygame.draw.rect(self.w.window, (0, 150, 0), (position[0] - self.l_perso/2, position[1] - 50, self.l_perso, self.h_perso))
+        pygame.draw.rect(pygame_params.window, (0, 150, 0), (position[0] - self.l_perso/2, position[1] - 50, self.l_perso, self.h_perso))
 
     def affiche_all(self, position: dict):
         self.affiche_zone_png(position)

@@ -2,10 +2,15 @@
 class Arme:
     def __init__(self, nom: str, position: dict, largeur: int, hauteur: int, image, renvoie: bool):
         self.nom = nom
-        self.position = position
+        self.proprietaire = None
+        self.x, self.y = position
         self.largeur, self.hauteur = largeur, hauteur
         self.image = image
         self.renvoie = renvoie
+
+    def affiche(self):
+        if self.proprietaire is None:
+            pass
 
 
 class Epee(Arme):

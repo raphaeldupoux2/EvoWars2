@@ -1,6 +1,7 @@
 import math
 import pygame
 
+from EvoWars2.pygamesetup import pygame_params
 from EvoWars2.sprite.personnage import AffichePlayer
 from EvoWars2.utils import Utils
 from EvoWars2.sprite.epee import ImageEpee
@@ -9,15 +10,14 @@ from EvoWars2.sprite.couronne import AfficheCouronne
 
 
 class PlayerBase:
-    def __init__(self, window, position, liste_obstacle, color=(50, 50, 90)):
-        self.w = window
-        self.x, self.y = position
+    def __init__(self, liste_obstacle, color=(50, 50, 90)):
+        self.x, self.y = (pygame_params.width / 2, pygame_params.height * 2/3)
         self.radius = 20
         self.color = color
-        self.player = AffichePlayer(window)
-        self.item = {"arme": {"épée": ImageEpee(window, position)},
-                     "couronne": AfficheCouronne(window, position)}
-        self.maitrise = {"épée": MaitriseEpee(window, self.item["arme"]["épée"].image),
+        self.player = AffichePlayer()
+        self.item = {"arme": {"épée": ImageEpee((self.x, self.y))},
+                     "couronne": AfficheCouronne((self.x, self.y))}
+        self.maitrise = {"épée": MaitriseEpee(self.item["arme"]["épée"].image),
                          "charge": MaitriseCharge()}
         self.vit_modif = 0
         self.solide = True
@@ -56,8 +56,11 @@ class PlayerBase:
             return 4 + self.vit_modif
         return vel
 
+    def affiche_pied(self):
+        return pygame.draw.circle(pygame_params.window, self.color, [self.x, self.y+50], self.radius, 0)
+
     def affiche_skin(self):
-        return pygame.draw.circle(self.w.window, self.color, [self.x, self.y], self.radius, 0), \
+        return pygame.draw.circle(pygame_params.window, self.color, [self.x, self.y], self.radius, 0), \
             # pygame.draw.circle(self.w.window, (0, 30, 55), [self.x, self.y], 100, 1), \
         # pygame.draw.circle(self.w.window, (0, 30, 55), [self.x, self.y], 110, 1)
 
@@ -67,8 +70,8 @@ class PlayerBase:
 
     def angle_mort(self, window):
         # Calculer les angles des deux bords du cône
-        angle_g = Utils.angle_radian_entre(self.position, Utils.curseur()) - math.pi / 3
-        angle_d = Utils.angle_radian_entre(self.position, Utils.curseur()) + math.pi / 3
+        angle_g = Utils.angle_radian_entre((self.x, self.y), Utils.curseur()) - math.pi / 3
+        angle_d = Utils.angle_radian_entre((self.x, self.y), Utils.curseur()) + math.pi / 3
 
         # Calculer les coordonnées des coins du rectangle gauche
         x1_g = self.x - 1000 * math.cos(angle_g)

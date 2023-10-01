@@ -2,10 +2,11 @@ import pygame
 
 from utils import Utils
 
+from EvoWars2.pygamesetup import pygame_params
+
 
 class MaitriseEpee:
-    def __init__(self, window, image_arme):
-        self.w = window
+    def __init__(self, image_arme):
         self.image_arme = image_arme
         self.arme_degainee = True
         self.coup = ""
@@ -103,18 +104,18 @@ class MaitriseEpee:
     def affiche_arme(self, position: tuple):
         if self.etat_attaque == "fanatique":
             if self.coup == "coup droit":
-                self.rotated_rect = Utils.blit_rotate(self.w.window, self.image_arme, (position[0], position[1]), (-5, 0), self.arme_degree + 90)
+                self.rotated_rect = Utils.blit_rotate(pygame_params.window, self.image_arme, (position[0], position[1]), (-5, 0), self.arme_degree + 90)
             elif self.coup == "revert":
-                self.rotated_rect = Utils.blit_rotate(self.w.window, self.image_arme, (position[0], position[1]), (35, 0), self.arme_degree + 90)
+                self.rotated_rect = Utils.blit_rotate(pygame_params.window, self.image_arme, (position[0], position[1]), (35, 0), self.arme_degree + 90)
             else:
-                self.rotated_rect = Utils.blit_rotate(self.w.window, self.image_arme, (position[0], position[1]), (15, 0), self.arme_degree + 90)
+                self.rotated_rect = Utils.blit_rotate(pygame_params.window, self.image_arme, (position[0], position[1]), (15, 0), self.arme_degree + 90)
         else:
             if self.coup == "coup droit":
-                self.rotated_rect = Utils.blit_rotate(self.w.window, self.image_arme, (position[0], position[1]), (-5, 0), self.arme_degree_relatif(position, self.direction_attaque) + 90)
+                self.rotated_rect = Utils.blit_rotate(pygame_params.window, self.image_arme, (position[0], position[1]), (-5, 0), self.arme_degree_relatif(position, self.direction_attaque) + 90)
             elif self.coup == "revert":
-                self.rotated_rect = Utils.blit_rotate(self.w.window, self.image_arme, (position[0], position[1]), (35, 0), self.arme_degree_relatif(position, self.direction_attaque) + 90)
+                self.rotated_rect = Utils.blit_rotate(pygame_params.window, self.image_arme, (position[0], position[1]), (35, 0), self.arme_degree_relatif(position, self.direction_attaque) + 90)
             else:
-                self.rotated_rect = Utils.blit_rotate(self.w.window, self.image_arme, (position[0], position[1]), (15, 0), self.arme_degree_relatif(position, self.direction_attaque) + 90)
+                self.rotated_rect = Utils.blit_rotate(pygame_params.window, self.image_arme, (position[0], position[1]), (15, 0), self.arme_degree_relatif(position, self.direction_attaque) + 90)
 
     def bouton(self, event):
         if self.etat_attaque == "repos":

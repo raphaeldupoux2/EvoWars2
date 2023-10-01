@@ -2,10 +2,11 @@ import random
 
 import pygame
 
+from EvoWars2.pygamesetup import pygame_params
+
 
 class AfficheStone:
-    def __init__(self, window, position: tuple):
-        self.w = window
+    def __init__(self, position: tuple):
         self.x, self.y = position
         self.largeur, self.longueur = 61, 44
         self.image = self.load_image()
@@ -21,7 +22,7 @@ class AfficheStone:
         return image
 
     def affiche_png(self):
-        self.w.window.blit(self.image, (self.x, self.y))
+        pygame_params.window.blit(self.image, (self.x, self.y))
 
     def comportement(self):
         self.affiche_png()
