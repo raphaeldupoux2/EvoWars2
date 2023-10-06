@@ -10,7 +10,7 @@ from EvoWars2.sprite.couronne import AfficheCouronne
 
 class PlayerBase:
     def __init__(self, window, position, liste_obstacle, color=(50, 50, 90)):
-        self.w = window
+        self.window = window.window
         self.x, self.y = position
         self.radius = 20
         self.color = color
@@ -56,14 +56,17 @@ class PlayerBase:
             return 4 + self.vit_modif
         return vel
 
+    def affiche_pied(self):
+        return pygame.draw.circle(self.window, self.color, [self.x, self.y+50], self.radius, 0)
+
     def affiche_skin(self):
-        return pygame.draw.circle(self.w.window, self.color, [self.x, self.y], self.radius, 0), \
-            # pygame.draw.circle(self.w.window, (0, 30, 55), [self.x, self.y], 100, 1), \
-        # pygame.draw.circle(self.w.window, (0, 30, 55), [self.x, self.y], 110, 1)
+        return pygame.draw.circle(self.window, self.color, [self.x, self.y], self.radius, 0), \
+            # pygame.draw.circle(self.window, (0, 30, 55), [self.x, self.y], 100, 1), \
+        # pygame.draw.circle(self.window, (0, 30, 55), [self.x, self.y], 110, 1)
 
     # def ligne_vision(self, degree):
     #     angle = -Utils.angle_degree_entre(self.position, Utils.curseur()) * 180 / math.pi - degree
-    #     Utils.blit_rotate(self.w.window, self.ligne, (self.x, self.y), (0, 0.5), angle)
+    #     Utils.blit_rotate(self.window, self.ligne, (self.x, self.y), (0, 0.5), angle)
 
     def angle_mort(self, window):
         # Calculer les angles des deux bords du cône

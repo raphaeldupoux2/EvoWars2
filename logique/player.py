@@ -41,7 +41,7 @@ class PlayerPhysique(PlayerBase):
 
         if self.is_in_control:
             self.bouge()
-        Utils.affiche_curseur(self.w.window)
+        Utils.affiche_curseur(self.window)
 
 
 # Pour Plus Tard
