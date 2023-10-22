@@ -1,4 +1,5 @@
 import pygame
+import random
 
 from EvoWars2.logique.elementaire import Elementaire
 from EvoWars2.picture.tools import Tools
@@ -13,8 +14,17 @@ from pygamesetup import PygameSetUp, SousFenetre
 from sprite.projectile import AfficheProjectile
 
 
+def random_pos(w: SousFenetre):
+    x = [random.randint(w.position[0] - w.width, w.position[0]),
+         random.randint(w.position[0] + w.width, w.position[0] + 2 * w.width)]
+    y = [random.randint(w.position[1] - w.height, w.position[1]),
+         random.randint(w.position[1] + w.height, w.position[1] + 2 * w.height)]
+    return x[random.randint(0, 1)], y[random.randint(0, 1)]
+
+
 class Map:
     def __init__(self, f, curseur):
+        self.f = f
         self.curseur = curseur
         self.fond = Fond(f.f1)
         self.fond2 = Fond(f.f2)
@@ -32,6 +42,8 @@ class Map:
         self._liste_objets = self.arbre + self.stone + self.feu_de_camp + self.player + self.balle + self.elementaire
         self.liste_objets_tries = []
 
+        self.boule_de_feu = 1
+        self.bdf = 0
         # h = Herbe(self.conf.fenetre1)
         # Tools.changer_couleur_image_and_save_it(h.image)
 
@@ -59,6 +71,19 @@ class Map:
         for elem in self.liste_objets_tries:
             elem.comportement()
 
+    def create_boule_de_feu(self):
+        if self.boule_de_feu < 20:
+            self.bdf += 0.005
+            if self.bdf >= 1:
+                new_elem = AfficheProjectile(self.f.f1, self.curseur, random_pos(self.f.f1), self.player[0])
+                self._liste_objets.append(new_elem)
+                self.bdf = 0
+                self.boule_de_feu += 1
+
+    def comportement(self):
+        self.affiche()
+        self.create_boule_de_feu()
+
 
 class GameInstance:
     def __init__(self):
@@ -78,7 +103,7 @@ class GameInstance:
     def game(self):
         while self.running:
             self.event()
-            self.map.affiche()
+            self.map.comportement()
 
             for f in self.conf.fenetres.all:
                 f.comportement()

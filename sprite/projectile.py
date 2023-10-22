@@ -21,10 +21,11 @@ class AfficheProjectile:
         self.skin = BouleDeFeu(window, (self.x, self.y))
         self.player_affect = player
         self.color = (200, 200, 0)
-        self.vel = 10
+        self.vel = 0
         self.radius = 10
         self._direction = 180
         self.projectile_move = False
+        self.new = True
 
     def frottement(self):
         self.vel -= 0.08
@@ -53,15 +54,16 @@ class AfficheProjectile:
         if self.projectile_move:
             self.x += math.cos(self._direction * math.pi / 180) * self.vel
             self.y += -math.sin(self._direction * math.pi / 180) * self.vel
-            if self.x <= 300 or self.x >= 700:
+            if 290 <= self.x <= 300 or 710 >= self.x >= 700:
                 self._direction = 180 - self._direction
-            elif self.y <= 100 or self.y >= 600:
+            elif 90 <= self.y <= 100 or 610 >= self.y >= 600:
                 self._direction *= -1
 
     def contact_arme_player(self):
         if Utils.point_dans_rectangle_incline(self.x, self.y, self.player_affect.maitrise["épée"].rotated_rect.centerx,
                                               self.player_affect.maitrise["épée"].rotated_rect.centery, 30, 100,
                                               -self.player_affect.maitrise["épée"].arme_degree_relatif((self.player_affect.x_arme, self.player_affect.y_arme), self.curseur.pos_relative) + 90):
+            self.new = False
             self.vel = 10
             self.player_affect.color = (255, 0, 0)
             self.projectile_move = True
@@ -73,8 +75,15 @@ class AfficheProjectile:
                 direction = 0
             self._direction = direction
 
+        elif Utils.distance_between((self.x, self.y), (self.player_affect.x_arme, self.player_affect.y_arme)) < 20:
+            print("Touché")
+
         else:
-            self.player_affect.color = (50, 50, 90)
+            if self.new is True:
+                self.projectile_move = True
+                direction = - Utils.angle_degree_entre((self.x, self.y), (self.player_affect.x_arme, self.player_affect.y_arme))
+                self.vel = 5
+                self._direction = direction
 
     def comportement(self):
         self.frottement()
