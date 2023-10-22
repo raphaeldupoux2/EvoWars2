@@ -4,8 +4,9 @@ from utils import Utils
 
 
 class MaitriseEpee:
-    def __init__(self, window, image_arme):
+    def __init__(self, window, curseur, image_arme):
         self.w = window
+        self.curseur = curseur
         self.image_arme = image_arme
         self.arme_degainee = True
         self.coup = ""
@@ -49,7 +50,7 @@ class MaitriseEpee:
         if self.arme_degree == -120 or self.arme_degree == 120:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 self.etat_attaque = "coup"
-                self.direction_attaque = Utils.curseur()
+                self.direction_attaque = self.curseur.pos_relative
 
     def coup_epee(self):
         if self.coup == "coup droit":
@@ -128,7 +129,7 @@ class MaitriseEpee:
         self.normalize_arme_degree()
         if self.etat_attaque == "repos":
             self.repositionnement()
-            self.direction_attaque = Utils.curseur()
+            self.direction_attaque = self.curseur.pos_relative
             self.change_hand()
 
         elif self.etat_attaque == "coup":
@@ -142,7 +143,8 @@ class MaitriseEpee:
 
 
 class MaitriseCharge:
-    def __init__(self):
+    def __init__(self, curseur):
+        self.curseur = curseur
         self.direction_charge = (0, 0)
         self.anim_charge = False
 
@@ -150,7 +152,7 @@ class MaitriseCharge:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_z:
                 self.anim_charge = True
-                self.direction_charge = Utils.curseur()
+                self.direction_charge = self.curseur.pos_relative
                 # self.vit_modif += 8
 
     def charge(self, position):

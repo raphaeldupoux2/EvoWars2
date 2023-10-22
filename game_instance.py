@@ -1,18 +1,21 @@
 import pygame
 
+from EvoWars2.logique.elementaire import Elementaire
 from EvoWars2.picture.tools import Tools
+from EvoWars2.sprite.elementaire import ImageElementaire
 from EvoWars2.sprite.feu_de_camp import AfficheCampFire
 from EvoWars2.sprite.fond import Fond, EtaleHerbe, EtaleTerre
 from sprite.arbre import AfficheArbre
 from EvoWars2.logique.player import Player
 from sprite.stone import AfficheStone
 from sprite.terrain_tennis import AfficheTerrainTennis
-from pygamesetup import PygameSetUp
+from pygamesetup import PygameSetUp, SousFenetre
 from sprite.projectile import AfficheProjectile
 
 
 class Map:
-    def __init__(self, f):
+    def __init__(self, f, curseur):
+        self.curseur = curseur
         self.fond = Fond(f.f1)
         self.fond2 = Fond(f.f2)
         self.terrain: list = [AfficheTerrainTennis(f.f1, 300, 100)]
@@ -20,22 +23,21 @@ class Map:
         self.stone: list = [AfficheStone(f.f1, (800, 600)), AfficheStone(f.f1, (830, 570)), AfficheStone(f.f1, (860, 600))]
         self.feu_de_camp = [AfficheCampFire(f.f1, (433, 100)), AfficheCampFire(f.f1, (566, 100))]
         self.arme: list = []
-        self.player = [Player(f.f2, (f.f1.width / 2, f.f1.height * 2 / 3), self.arbre)]
-        self.balle: list = [AfficheProjectile(f.f1, (f.f1.width / 2, f.f1.height / 2), self.player[0].physique[0])]
+        self.player = [Player(f.f1, self.curseur, (f.f1.width / 2, f.f1.height * 2 / 3), self.arbre), Player(f.f2, self.curseur, (f.f1.width / 2, f.f1.height * 2 / 3), self.arbre)]
+        self.balle: list = [AfficheProjectile(f.f1, curseur, (f.f1.width / 2, f.f1.height / 2), self.player[0])]
         self.etale_herbe = EtaleHerbe(f.f1)
         self.etale_terre = EtaleTerre(f.f1)
+        self.elementaire = [Elementaire(f.f1, (f.f2.width / 2, f.f2.height * 2 / 3))]
 
-        self._liste_objets = self.arbre + self.stone + self.feu_de_camp + self.player[0].physique + self.balle
+        self._liste_objets = self.arbre + self.stone + self.feu_de_camp + self.player + self.balle + self.elementaire
         self.liste_objets_tries = []
 
         # h = Herbe(self.conf.fenetre1)
         # Tools.changer_couleur_image_and_save_it(h.image)
 
     def bouton_player(self, event):
-        for spirit in self.player[0].spirit:
-            spirit.bouton(event)
-        for physique in self.player[0].physique:
-            physique.bouton(event)
+        for p in self.player:
+            p.bouton(event)
 
     def bouton(self, event):
         self.bouton_player(event)
@@ -59,11 +61,10 @@ class Map:
 
 
 class GameInstance:
-
     def __init__(self):
         self.running = True
         self.conf = PygameSetUp()
-        self.map = Map(self.conf.fenetres)
+        self.map = Map(self.conf.fenetres, self.conf.curseur)
 
     def exit(self, event):
         if event.type == pygame.QUIT:
@@ -82,5 +83,6 @@ class GameInstance:
             for f in self.conf.fenetres.all:
                 f.comportement()
 
+            self.conf.curseur.refresh_curseur()
             self.conf.main_window.window_refresh()
             self.conf.fps_control()

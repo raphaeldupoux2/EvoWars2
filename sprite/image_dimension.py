@@ -29,6 +29,10 @@ class Image:
     def affiche_zone_png(self):
         pygame.draw.rect(self.w.window, (0, 150, 0), (self.x - self.x_decal, self.y - self.y_decal, self.width, self.height))
 
+    def affiche_position(self):
+        pygame.draw.circle(self.w.window, (0, 0, 0), [self.x, self.y], 1, 1)
+
     def affiche_all(self):
         self.affiche_zone_png()
         self.affiche_png()
+        self.affiche_position()

@@ -25,6 +25,8 @@ class Utils:
 
     @staticmethod
     def distance_between(objet1: tuple, objet2: tuple):
+        if objet1 is None or objet2 is None:
+            return 0
         return math.sqrt((objet1[1] - objet2[1]) ** 2 + (objet1[0] - objet2[0]) ** 2)
 
     @staticmethod

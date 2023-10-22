@@ -3,6 +3,8 @@ import pygame
 
 from utils import Utils
 
+from EvoWars2.logique.player import Player
+from EvoWars2.sprite.elementaire import ImageElementaire
 from EvoWars2.sprite.image_dimension import Image
 
 
@@ -12,8 +14,9 @@ class BouleDeFeu(Image):
 
 
 class AfficheProjectile:
-    def __init__(self, window, position: tuple, player, liste_obstacle=None):
+    def __init__(self, window, curseur, position: tuple, player: Player, liste_obstacle=None):
         self.w = window
+        self.curseur = curseur
         self.x, self.y = position
         self.skin = BouleDeFeu(window, (self.x, self.y))
         self.player_affect = player
@@ -22,6 +25,21 @@ class AfficheProjectile:
         self.radius = 10
         self._direction = 180
         self.projectile_move = False
+
+    def frottement(self):
+        self.vel -= 0.08
+        if self.vel <= 0:
+            self.vel = 0
+
+    def changement_skin(self):
+        if self.vel == 0:
+            self.skin = ImageElementaire(self.w, (self.x, self.y))
+            self.skin.affiche_png()
+        else:
+            self.skin = BouleDeFeu(self.w, (self.x, self.y))
+            rotated_image = pygame.transform.rotate(self.skin.image, self.direction - 90)
+            rect = rotated_image.get_rect()
+            self.w.window.blit(rotated_image, (self.x - rect.width / 2, self.y - rect.height / 2))
 
     @property
     def direction(self):
@@ -43,13 +61,14 @@ class AfficheProjectile:
     def contact_arme_player(self):
         if Utils.point_dans_rectangle_incline(self.x, self.y, self.player_affect.maitrise["épée"].rotated_rect.centerx,
                                               self.player_affect.maitrise["épée"].rotated_rect.centery, 30, 100,
-                                              -self.player_affect.maitrise["épée"].arme_degree_relatif((self.player_affect.x, self.player_affect.y), Utils.curseur()) + 90):
+                                              -self.player_affect.maitrise["épée"].arme_degree_relatif((self.player_affect.x_arme, self.player_affect.y_arme), self.curseur.pos_relative) + 90):
+            self.vel = 10
             self.player_affect.color = (255, 0, 0)
             self.projectile_move = True
             if self.player_affect.maitrise["épée"].coup == "coup droit":
-                direction = self.player_affect.maitrise["épée"].arme_degree_relatif((self.player_affect.x, self.player_affect.y), Utils.curseur()) + 90
+                direction = self.player_affect.maitrise["épée"].arme_degree_relatif((self.player_affect.x_arme, self.player_affect.y_arme), self.curseur.pos_relative) + 90
             elif self.player_affect.maitrise["épée"].coup == "revert":
-                direction = self.player_affect.maitrise["épée"].arme_degree_relatif((self.player_affect.x, self.player_affect.y), Utils.curseur()) - 90
+                direction = self.player_affect.maitrise["épée"].arme_degree_relatif((self.player_affect.x_arme, self.player_affect.y_arme), self.curseur.pos_relative) - 90
             else:
                 direction = 0
             self._direction = direction
@@ -58,9 +77,9 @@ class AfficheProjectile:
             self.player_affect.color = (50, 50, 90)
 
     def comportement(self):
-        rotated_image = pygame.transform.rotate(self.skin.image, self.direction - 90)
-        rect = rotated_image.get_rect()
-        self.w.window.blit(rotated_image, (self.x - rect.width/2, self.y - rect.height/2))
+        self.frottement()
+        self.changement_skin()
+
 
         # self.skin.affiche_png()
 
