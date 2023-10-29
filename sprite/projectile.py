@@ -3,14 +3,14 @@ import pygame
 
 from utils import Utils
 
-from EvoWars2.logique.player import Player
-from EvoWars2.sprite.elementaire import ImageElementaire
-from EvoWars2.sprite.image_dimension import Image
+from logique.player import Player
+from logique.elementaire import ImageElementaire
+from sprite.image_dimension import Image
 
 
 class BouleDeFeu(Image):
     def __init__(self, window, position):
-        super().__init__(window, position, (17, 18), (33, 200), 'picture/png_hd/fireball.png')
+        super().__init__(window, position, (1/2, 18/200), (33, 200), 'picture/png_hd/fireball.png')
 
 
 class AfficheProjectile:

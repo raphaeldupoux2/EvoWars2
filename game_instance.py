@@ -1,13 +1,12 @@
 import pygame
 import random
 
-from EvoWars2.logique.elementaire import Elementaire
-from EvoWars2.picture.tools import Tools
-from EvoWars2.sprite.elementaire import ImageElementaire
-from EvoWars2.sprite.feu_de_camp import AfficheCampFire
-from EvoWars2.sprite.fond import Fond, EtaleHerbe, EtaleTerre
+from logique.elementaire import Elementaire
+from picture.tools import Tools
+from sprite.feu_de_camp import AfficheCampFire
+from sprite.fond import Fond, EtaleHerbe, EtaleTerre
 from sprite.arbre import AfficheArbre
-from EvoWars2.logique.player import Player
+from logique.player import Player
 from sprite.stone import AfficheStone
 from sprite.terrain_tennis import AfficheTerrainTennis
 from pygamesetup import PygameSetUp, SousFenetre

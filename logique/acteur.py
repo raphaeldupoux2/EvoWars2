@@ -1,9 +1,3 @@
-import pygame
-
-from EvoWars2.pygamesetup import SousFenetre
-from EvoWars2.sprite.elementaire import ImageElementaire
-
-
 class Acteur:
     def __init__(self, position, skin):
         self.x, self.y = position

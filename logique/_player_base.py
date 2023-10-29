@@ -1,11 +1,11 @@
 import math
 import pygame
 
-from EvoWars2.sprite.personnage import AffichePlayer
-from EvoWars2.utils import Utils
-from EvoWars2.sprite.epee import ImageEpee
-from EvoWars2.logique.maitrise import MaitriseEpee, MaitriseCharge
-from EvoWars2.sprite.couronne import AfficheCouronne
+from sprite.personnage import AffichePlayer
+from utils import Utils
+from sprite.epee import ImageEpee
+from logique.maitrise import MaitriseEpee, MaitriseCharge
+from sprite.couronne import AfficheCouronne
 
 
 class PlayerBase:
@@ -13,7 +13,7 @@ class PlayerBase:
         self.window = window
         self.curseur = curseur
         self.x_arme, self.y_arme = position
-        self.radius = 20
+        self.radius = 15
         self.color = color
         self.player = AffichePlayer(window)
         self.item = {"arme": {"épée": ImageEpee(window, position)},

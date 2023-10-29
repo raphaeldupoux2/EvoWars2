@@ -1,9 +1,8 @@
 import pygame
 
-from EvoWars2.logique.acteur import Acteur
-from EvoWars2.pygamesetup import SousFenetre
-from EvoWars2.sprite.elementaire import ImageElementaire
-from EvoWars2.utils import Utils
+from logique.acteur import Acteur
+from pygamesetup import SousFenetre
+from sprite.image_dimension import ImageElementaire
 
 
 class Elementaire(Acteur):

@@ -1,26 +1,21 @@
 import pygame
 
+from sprite.image_dimension import Image
 
-class AfficheArbre:
+
+class AfficheArbre(Image):
+    couleur_tronc = (112, 93, 72)
+
     def __init__(self, window, position: tuple):
-        self.w = window
-        self.x, self.y = position
-        self.largeur, self.hauteur = 250, 250
-        self.tronc_radius = (self.largeur + self.hauteur) / 34
-        self.feuille_radius = 50
-        self.image_path = "./picture/arbre/grand_arbre.png"
-        self.image = self.load_image()
+        super().__init__(window, position, (23/44, 7/8), (250, 250), "./picture/arbre/grand_arbre.png")
+        self.tronc_radius = (self.width + self.height) / 34
 
-    def load_image(self):
-        image_origin = pygame.image.load(self.image_path)  # .convert_alpha()
-        image = pygame.transform.scale(image_origin, (self.largeur, self.hauteur))
-        return image
-
-    def affiche_png(self):
-        self.w.window.blit(self.image, (self.x - self.largeur * 6 / 11, self.y - 7 / 8 * self.hauteur))
+    def affiche_tronc(self):
+        return pygame.draw.circle(self.w.window, self.couleur_tronc, [self.x, self.y], self.tronc_radius, 0)
 
     def comportement(self):
         self.affiche_png()
+        self.affiche_tronc()
 
 
 class AfficheArbre12:
