@@ -36,7 +36,7 @@ class GameInstance:
         main = self.conf.main_window.add_main_fenetre("FullStratFightTactic", 1000, 720)
         f1 = self.conf.fenetres.add_sous_fenetre(main, (10, 10), 980, 700, "campagne")
         f2 = self.conf.fenetres.add_sous_fenetre(main, (1020, 10), 200, 200, "monde parallèle")
-        self.monde.player.append(Player((50, 50), (40, 75)))
+        self.monde.player.append(Player((50, 50), (55, 125)))
 
         while self.running:
             self.event()

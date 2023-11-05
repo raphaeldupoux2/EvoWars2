@@ -14,14 +14,9 @@ class Player(Acteur):
 
 class ImagePlayerPostures(Image):
     def __init__(self, dimension: tuple):
-        super().__init__('../picture/personnage/origin_redimension.png', (250, 125))
         self.l_perso, self.h_perso = dimension
-        self.postures = None
-        self.reload(dimension)
-
-    def reload(self, dimension):
-        self.l_perso, self.h_perso = dimension
-        self.width, self.height = self.l_perso * 250 / 55, self.h_perso
+        dimension_png = self.l_perso * 250/55, self.h_perso
+        super().__init__('../picture/personnage/origin_redimension.png', dimension_png)
         self.postures = {
             'face': pygame.Rect(self.width / 25, 0, self.width * 55 / 250, self.height),
             'face-cote_droit': pygame.Rect(self.width * 70 / 250, 0, self.width * 55 / 250, self.height),
