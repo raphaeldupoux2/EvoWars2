@@ -1,15 +1,6 @@
 import pygame
 
 
-class FenetrePrincipaleManager:
-    fenetre = None
-
-    def add_main_fenetre(self, title, width, height):
-        if self.fenetre is None:
-            self.fenetre = FenetrePrincipale(title, width, height)
-            return self.fenetre
-
-
 class FenetrePrincipale:
     def __init__(self, title, width, height):
         self.title = title
@@ -41,7 +32,7 @@ class SousFenetreManager:
 
 
 class SousFenetre:
-    def __init__(self, main_window, position=(0, 0), width=0, height=0, nom=""):
+    def __init__(self, main_window, position, width, height, nom):
         self.nom: str = nom
         self.main_window = main_window
         self.position: tuple = position
@@ -75,7 +66,8 @@ class Curseur:
         :return: tuple(x, y)
         """
         if self.fenetre_control is not None:
-            self.pos_relative = self.pos_globale[0] - self.fenetre_control.position[0], self.pos_globale[1] - self.fenetre_control.position[1]
+            self.pos_relative = (self.pos_globale[0] - self.fenetre_control.position[0],
+                                 self.pos_globale[1] - self.fenetre_control.position[1])
 
     def refresh_curseur(self):
         self.pos_globale = pygame.mouse.get_pos()
@@ -84,18 +76,18 @@ class Curseur:
 
 
 class Horloge:
-    def __init__(self):
+    def __init__(self, fps):
         self.clock = pygame.time.Clock()
-        self.fps = 60
+        self.fps = fps
 
     def fps_control(self):
         self.clock.tick(self.fps)
 
 
 class PygameSetUp:
-    def __init__(self):
+    def __init__(self, title='', width=1000, height=720, fps=60):
         pygame.init()
-        self.main_window = FenetrePrincipaleManager()
+        self.main_window = FenetrePrincipale(title, width, height)
         self.fenetres = SousFenetreManager()
         self.curseur = Curseur(self.fenetres)
-        self.horloge = Horloge()
+        self.horloge = Horloge(fps)
