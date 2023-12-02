@@ -1,5 +1,5 @@
-from EvoWars2.sprite.image_dimension import Image
-from EvoWars2.utils import Utils
+from sprite.image_dimension import Image
+from utils import Utils
 
 
 class Fond:

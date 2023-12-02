@@ -1,6 +1,6 @@
 import pygame
 
-from EvoWars2.utils import Utils
+from utils import Utils
 
 
 class AffichePlayer:

@@ -1,7 +1,7 @@
-from EvoWars2.logique._player_base import PlayerBase
+from logique._player_base import PlayerBase
 import pygame
 
-from EvoWars2.utils import Utils
+from utils import Utils
 
 
 class Player(PlayerBase):

@@ -1,6 +1,6 @@
 import pygame
 
-from EvoWars2.sprite.image_dimension import Image
+from sprite.image_dimension import Image
 
 
 class ImageElementaire(Image):

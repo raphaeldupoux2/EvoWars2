@@ -3,9 +3,9 @@ import pygame
 
 from utils import Utils
 
-from EvoWars2.logique.player import Player
-from EvoWars2.sprite.elementaire import ImageElementaire
-from EvoWars2.sprite.image_dimension import Image
+from logique.player import Player
+from sprite.elementaire import ImageElementaire
+from sprite.image_dimension import Image
 
 
 class BouleDeFeu(Image):
