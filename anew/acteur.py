@@ -1,42 +1,5 @@
 import math
 import pygame
-import time
-from datetime import timedelta
-
-
-class SlowEffect:
-    def __init__(self, cible):
-        self.cible = cible
-        self.temps_seconde = 0
-        self.intensite = 0  # entre 0 et 1
-        self.instant_debut = None
-
-    @property
-    def duree(self):
-        return timedelta(seconds=self.temps_seconde)
-
-    @property
-    def duree_ecoule(self):
-        if self.instant_debut is not None:
-            return timedelta(time.time() - self.instant_debut)
-
-    def apply(self):
-        if self.duree_ecoule is not None:
-            if self.duree_ecoule < self.duree:
-                self.cible.vitesse = self.cible.vitesse_ref * (1 - self.intensite)
-            else:
-                self.temps_seconde = 0
-                self.intensite = 0
-                self.instant_debut = None
-
-    def refresh_timer(self):
-        self.instant_debut = time.time()
-
-
-class PossessionEffect:
-    def __init__(self):
-        duree_effet = timedelta(seconds=3)
-        duree_chargement = timedelta(seconds=3)
 
 
 class Acteur:
@@ -46,8 +9,7 @@ class Acteur:
         self.vitesse = vitesse
         self.vitesse_ref = vitesse
         self.effet = {'slow': 0,
-                      'possession': {'possede': 0, 'possesseur': None, 'is_controled': False},
-                      'slowed': SlowEffect(self)}  # 0 coorespond au nombre d'occurence de l'effet affecter à l'acteur
+                      'possession': {'possede': 0, 'possesseur': None, 'is_controled': False}}  # 0 coorespond au nombre d'occurence de l'effet affecter à l'acteur
         self.vivant = vivant
 
     def resolve_effect(self):
@@ -64,8 +26,7 @@ class Acteur:
         self.effet['possession']['possede'] = min(self.effet['possession']['possede'] + 1, 500)
 
     def slow_effect(self):
-        self.vitesse = max(3 / 4 * self.vitesse_ref - math.pow(self.effet['slow'], 1 / 2) / 10,
-                           0) + self.vitesse_ref / 4
+        self.vitesse = (3 / 4 * self.vitesse_ref*(1-self.effet['slow']) - self.effet['slow']*3/4) + self.vitesse_ref / 4
 
     def retablissement(self):
         self.effet['slow'] = max(self.effet['slow'] - 1 / 2, 0)

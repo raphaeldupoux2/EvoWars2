@@ -1,11 +1,11 @@
 import pygame
 import random
 
+from logique.arbre import Arbre
 from logique.elementaire import Elementaire
 from picture.tools import Tools
 from sprite.feu_de_camp import AfficheCampFire
 from sprite.fond import Fond, EtaleHerbe, EtaleTerre
-from sprite.arbre import AfficheArbre
 from logique.player import Player
 from sprite.stone import AfficheStone
 from sprite.terrain_tennis import AfficheTerrainTennis
@@ -28,7 +28,7 @@ class Map:
         self.fond = Fond(f.f1)
         self.fond2 = Fond(f.f2)
         self.terrain: list = [AfficheTerrainTennis(f.f1, 300, 100)]
-        self.arbre: list = [AfficheArbre(f.f1, (200, 500)), AfficheArbre(f.f1, (80, 600)), AfficheArbre(f.f1, (90, 400)), AfficheArbre(f.f1, (850, 150))]  # , Arbre(f.f1indow, 110, 550), Arbre(f.f1indow, 250, 520), Arbre(f.f1indow, 150, 420), Arbre(f.f1indow, 90, 620), Arbre(f.f1indow, 800, 60)]
+        self.arbre: list = [Arbre(f.f1, (200, 500)), Arbre(f.f1, (80, 600)), Arbre(f.f1, (90, 400)), Arbre(f.f1, (850, 150))]  # , Arbre(f.f1indow, 110, 550), Arbre(f.f1indow, 250, 520), Arbre(f.f1indow, 150, 420), Arbre(f.f1indow, 90, 620), Arbre(f.f1indow, 800, 60)]
         self.stone: list = [AfficheStone(f.f1, (800, 600)), AfficheStone(f.f1, (830, 570)), AfficheStone(f.f1, (860, 600))]
         self.feu_de_camp = [AfficheCampFire(f.f1, (433, 100)), AfficheCampFire(f.f1, (566, 100))]
         self.arme: list = []

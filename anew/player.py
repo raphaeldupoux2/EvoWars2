@@ -3,7 +3,7 @@ import random
 
 import pygame
 
-from anew.acteur import Acteur, normalize_angle, affiche_radius, SlowEffect
+from anew.acteur import Acteur, normalize_angle
 
 
 class Player(Acteur):
@@ -29,7 +29,6 @@ class Player(Acteur):
         else:
             self.move_to_position((self.effet['possession']['possesseur'].x, self.effet['possession']['possesseur'].y))
             self.image.angle = self.direction_degree_vers((self.effet['possession']['possesseur'].x, self.effet['possession']['possesseur'].y))
-            self.vitesse = 0.5
 
     def button(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -87,7 +86,6 @@ class Spectre(Acteur):
             self.cible.possession_accumulation()
         if self.cible.effet['possession']['possede'] > 300:
             self.cible.effet['possession']['is_controled'] = True
-            self.cible.vitesse = 0.9
             self.cible = None
 
     def power(self):
@@ -209,22 +207,3 @@ class ImageStone:
 
     def reload_png(self):
         self.png = self.load_png()
-
-
-class SpectreSlowPower:
-
-    def __init__(self, monde, spectre):
-        self.monde = monde
-        self.spectre = spectre
-        self.intensite_pourcent_par_frame = 0.4
-        self.temps_slow = 3
-        self.vitesse_min = 0.8
-
-    def slow_power(self):
-        for v in self.monde.vivant:
-            if self.spectre.distance_avec((v.x, v.y)) < self.spectre.radius:
-                if v.effet['slow'].temps_seconde < self.temps_slow:
-                    v.effet['slow'].temps_seconde = self.temps_slow
-                if v.vitesse > self.vitesse_min:
-                    v.effet['slow'].intensite += self.intensite_pourcent_par_frame
-                v.effet['slow'].refresh_timer()

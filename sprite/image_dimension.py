@@ -2,17 +2,13 @@ import pygame
 
 
 class Image:
-    def __init__(self, window, position: tuple, dimension: tuple, pos_decal: tuple, path: str):
+    def __init__(self, dimension: tuple, pos_decal: tuple, path: str):
         """
         Pour les png qui n'ont pas besoin d'être rogné
-        :param window:
-        :param position: (x, y)
-        :param pos_decal: (x_decal, y_decal)
+        :param pos_decal: (x_decal, y_decal) détermine le point de référence du png (les pieds du personnage)
         :param dimension: (width, height)
         :param path: "picture/arbre/arbre.png"
         """
-        self.w = window
-        self.x, self.y = position
         self.x_decal, self.y_decal = pos_decal
         self.width, self.height = dimension
         self.image_path = path
@@ -23,34 +19,15 @@ class Image:
         image = pygame.transform.scale(image_origin, (self.width, self.height))
         return image
 
-    def affiche_png(self):
-        self.w.window.blit(self.image, (self.x - self.width * self.x_decal, self.y - self.height * self.y_decal))
-
-    def affiche_zone_png(self):
-        pygame.draw.rect(self.w.window, (0, 150, 0), (self.x - self.x_decal, self.y - self.y_decal, self.width, self.height))
-
-    def affiche_position(self):
-        pygame.draw.circle(self.w.window, (0, 0, 0), [self.x, self.y], 1, 1)
-
-    def affiche_all(self):
-        self.affiche_zone_png()
-        self.affiche_png()
-        self.affiche_position()
-
-    def comportement(self):
-        """ On pourra surcharger cette méthode """
-        self.affiche_png()
+    def reload_image(self):
+        self.image = self.load_image()
 
 
-class ImageElementaire(Image):
-    dim = (35, 60)
-
-    def __init__(self, window, position: tuple, dimension: tuple = dim):
-        super().__init__(window, position, dimension, (1/2, 2/3), "picture/png_hd/elementaire.png")
+class ImageHerbe(Image):
+    def __init__(self, dimension=(200, 200)):
+        super().__init__((200, 200), (0, 0), 'picture/surface/herbe.png')
 
 
-class AfficheArbre(Image):
-    dim = (250, 250)
-
-    def __init__(self, window, position: tuple, dimension: tuple = dim):
-        super().__init__(window, position, dimension, (23/44, 7/8), "./picture/arbre/grand_arbre.png")
+class ImageTerreCorail(Image):
+    def __init__(self, dimension=(200, 200)):
+        super().__init__(dimension, 'picture/surface/terre_corail.png')

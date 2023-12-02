@@ -4,6 +4,33 @@ from anew.player import Player, Spectre, PierreTombale
 from pygame_setup import PygameSetUp
 
 
+class Cimetiere:
+    def __init__(self, monde):
+        pt = PierreTombale(monde, (500, 200), monde.dimension_pt)
+        pt2 = PierreTombale(monde, (600, 200), monde.dimension_pt)
+        pt3 = PierreTombale(monde, (700, 200), monde.dimension_pt)
+
+        e = Spectre(monde, (500, 200), 1, monde.dimension_humain)
+        e2 = Spectre(monde, (600, 200), 1, monde.dimension_humain)
+        e3 = Spectre(monde, (700, 200), 1, monde.dimension_humain)
+
+        e.pierre_tombale = pt
+        e2.pierre_tombale = pt2
+        e3.pierre_tombale = pt3
+
+        pt4 = PierreTombale(monde, (500, 300), monde.dimension_pt)
+        pt5 = PierreTombale(monde, (600, 300), monde.dimension_pt)
+        pt6 = PierreTombale(monde, (700, 300), monde.dimension_pt)
+
+        e4 = Spectre(monde, (500, 300), 1, monde.dimension_humain)
+        e5 = Spectre(monde, (600, 300), 1, monde.dimension_humain)
+        e6 = Spectre(monde, (700, 300), 1, monde.dimension_humain)
+
+        e4.pierre_tombale = pt4
+        e5.pierre_tombale = pt5
+        e6.pierre_tombale = pt6
+
+
 class World:
     dimension_humain = (27, 60)
     dimension_pt = (20, 20)
@@ -17,18 +44,7 @@ class World:
         self.tree = []
 
         Player(self, (100, 400), 3, True, self.dimension_humain)
-
-        pt = PierreTombale(self, (500, 200), self.dimension_pt)
-        # pt2 = PierreTombale(self, (600, 300), self.dimension_pt)
-        # pt3 = PierreTombale(self, (450, 250), self.dimension_pt)
-
-        e = Spectre(self, (500, 200), 1, self.dimension_humain)
-        # e2 = Spectre(self, (600, 300), 1, self.dimension_humain)
-        # e3 = Spectre(self, (450, 250), 1, self.dimension_humain)
-
-        e.pierre_tombale = pt
-        # e2.pierre_tombale = pt2
-        # e3.pierre_tombale = pt3
+        Cimetiere(self)
 
     @property
     def all_objects(self):
@@ -83,7 +99,7 @@ class GameInstance:
 
     def game(self):
         f1 = self.conf.fenetres.add_sous_fenetre(self.conf.main_window, (10, 10), 980, 520, "campagne")
-        f2 = self.conf.fenetres.add_sous_fenetre(self.conf.main_window, (10, 540), 980, 170, "monde parallèle")
+        f2 = self.conf.fenetres.add_sous_fenetre(self.conf.main_window, (10, 540), 980, 170, "stats")
 
         while self.running:
             self.event()
