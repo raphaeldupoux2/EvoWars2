@@ -34,7 +34,7 @@ class AfficheProjectile:
 
     def changement_skin(self):
         if self.vel == 0:
-            self.skin = ImageElementaire(self.w, (self.x, self.y))
+            self.skin = Image((35, 60), (1/2, 2/3), "picture/png_hd/elementaire.png")
             self.skin.affiche_png()
         else:
             self.skin = BouleDeFeu(self.w, (self.x, self.y))

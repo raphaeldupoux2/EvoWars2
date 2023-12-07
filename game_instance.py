@@ -5,7 +5,8 @@ from logique.arbre import Arbre
 from logique.elementaire import Elementaire
 from picture.tools import Tools
 from sprite.feu_de_camp import AfficheCampFire
-from sprite.fond import Fond, EtaleHerbe, EtaleTerre
+from sprite.fond import Fond
+from logique.fond import EtaleHerbe, EtaleTerre
 from logique.player import Player
 from sprite.stone import AfficheStone
 from sprite.terrain_tennis import AfficheTerrainTennis

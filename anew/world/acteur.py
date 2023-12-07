@@ -2,37 +2,19 @@ import math
 import pygame
 
 
+class Famille:
+    def __init__(self, type_objet, vivant):
+        self.type_objet: str = type_objet  # "creature" / "objet" / "lieu"
+        self.vivant: bool = vivant
+
+
 class Acteur:
-    def __init__(self, monde, coords: tuple, vitesse: float = 0, vivant=False):
+    def __init__(self, monde, type_objet, coords: tuple, vitesse: float = 0, vivant=None):
         self.monde = monde
+        self.famille = Famille(type_objet, vivant)
         self.x, self.y = coords
         self.vitesse = vitesse
         self.vitesse_ref = vitesse
-        self.effet = {'slow': 0,
-                      'possession': {'possede': 0, 'possesseur': None, 'is_controled': False}}  # 0 coorespond au nombre d'occurence de l'effet affecter à l'acteur
-        self.vivant = vivant
-
-    def resolve_effect(self):
-        # if self.effet['slow'] > 0:
-        self.slow_effect()
-        self.retablissement()
-        # else:
-        #     self.vitesse = self.vitesse_ref
-
-    def slow_accumulation(self):
-        self.effet['slow'] = min(self.effet['slow'] + 1, 500)
-
-    def possession_accumulation(self):
-        self.effet['possession']['possede'] = min(self.effet['possession']['possede'] + 1, 500)
-
-    def slow_effect(self):
-        self.vitesse = (3 / 4 * self.vitesse_ref*(1-self.effet['slow']) - self.effet['slow']*3/4) + self.vitesse_ref / 4
-
-    def retablissement(self):
-        self.effet['slow'] = max(self.effet['slow'] - 1 / 2, 0)
-        self.effet['possession']['possede'] = max(self.effet['possession']['possede'] - 1 / 10, 0)
-        if self.effet['possession']['possede'] <= 200:
-            self.effet['possession']['is_controled'] = False
 
     def move_in_direction(self, direction):
         """
