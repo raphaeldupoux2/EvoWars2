@@ -14,8 +14,7 @@ class Player(Acteur):
         self.image = ImageSorcier(dimension, 'picture/sorcier_rouge.png')
         self.etat = Etat(slow_max, possession_max)
         self.effet_subis = Effet(self.monde, self, self.etat)
-        self.clic_gauche = (self.x, self.y)
-        self.clic_droit = (self.x, self.y)
+        self.position_affectee = (self.x, self.y)
         self.monde.player.append(self)
 
     def print_image(self, w):
@@ -29,12 +28,5 @@ class Player(Acteur):
     def behavior(self, w):
         self.print_image(w)
         if self.etat.possession['is_controled'] is False:
-            self.move_to_position(self.clic_droit)
+            self.move_to_position(self.position_affectee)
         self.effet_subis.apply()
-
-    def button(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:
-                self.clic_gauche = event.pos
-            elif event.button == 3:
-                self.clic_droit = event.pos

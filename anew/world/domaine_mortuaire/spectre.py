@@ -11,7 +11,7 @@ class Spectre(Acteur):
     def __init__(self, monde, coords: tuple, vitesse, dimension):
         super().__init__(monde, "creature", coords, vitesse=vitesse)
         self.image = ImageSorcier(dimension, 'picture/sorcier_fantome.png')
-        self._cible_potentiel = self.monde.player[0]
+        self._cible_potentiel = self.monde.player
         self.cible = None
         self.direction = 0  # en radian
         self.pierre_tombale = None
@@ -29,9 +29,10 @@ class Spectre(Acteur):
             self.cible = None
 
     def chasse_cible_potentiel_dans_aire_pierre_tombale(self):  # si quelqu'un s'approche trop près de la pierre tombale alors il le prend pour cible
-        if self.pierre_tombale.distance_avec((self._cible_potentiel.x, self._cible_potentiel.y)) <= self.pierre_tombale.radius:
-            if self._cible_potentiel.etat.possession['is_controled'] is False:
-                self.cible = self._cible_potentiel
+        for c in self._cible_potentiel:
+            if self.pierre_tombale.distance_avec((c.x, c.y)) <= self.pierre_tombale.radius:
+                if c.etat.possession['is_controled'] is False:
+                    self.cible = c
 
     def direction_calcul(self):
         if self.pierre_tombale is not None:

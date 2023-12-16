@@ -1,5 +1,6 @@
 import math
 import pygame
+from abc import ABC, abstractmethod
 
 
 class Famille:
@@ -8,13 +9,17 @@ class Famille:
         self.vivant: bool = vivant
 
 
-class Acteur:
+class Acteur(ABC):
     def __init__(self, monde, type_objet, coords: tuple, vitesse: float = 0, vivant=None):
         self.monde = monde
         self.famille = Famille(type_objet, vivant)
         self.x, self.y = coords
         self.vitesse = vitesse
         self.vitesse_ref = vitesse
+
+    @abstractmethod
+    def behavior(self):
+        pass
 
     def move_in_direction(self, direction):
         """

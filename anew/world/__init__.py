@@ -14,14 +14,15 @@ class World:
         self.player = []
         self.spectre = []
         self.pierre_tombale = []
-        self.tree = []
 
         Player(self, (100, 400), 3, self.dimension_humain, 300, 500)
+        Player(self, (100, 200), 3, self.dimension_humain, 300, 500)
+
         Cimetiere(self)
 
     @property
     def all_objects(self):
-        return self.player + self.spectre + self.pierre_tombale + self.tree
+        return self.player + self.spectre + self.pierre_tombale
 
     @property
     def all_objects_sorted(self):
@@ -49,7 +50,3 @@ class World:
         w.window.blit(player_possede, (10, 70))
         w.window.blit(player_is_contoled, (10, 100))
         w.window.blit(spectre_cible, (300, 10))
-
-    def button(self, event):
-        for p in self.player:
-            p.button(event)
