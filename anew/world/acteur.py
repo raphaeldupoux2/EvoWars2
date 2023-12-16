@@ -5,7 +5,7 @@ from abc import ABC, abstractmethod
 
 class Famille:
     def __init__(self, type_objet, vivant):
-        self.type_objet: str = type_objet  # "creature" / "objet" / "lieu"
+        self.type_objet: str = type_objet  # "creature" / "objet" / "lieu" / "abstrait" / "marqueur"
         self.vivant: bool = vivant
 
 
@@ -13,20 +13,36 @@ class Acteur(ABC):
     def __init__(self, monde, type_objet, coords: tuple, vitesse: float = 0, vivant=None):
         self.monde = monde
         self.famille = Famille(type_objet, vivant)
-        self.x, self.y = coords
+        self.x_abs, self.y_abs = coords
         self.vitesse = vitesse
         self.vitesse_ref = vitesse
 
     @abstractmethod
-    def behavior(self):
+    def behavior(self, w):
         pass
+
+    @property
+    def x_rel(self):
+        return self.x_abs - self.monde.camera.x_abs
+
+    @property
+    def y_rel(self):
+        return self.y_abs - self.monde.camera.y_abs
+
+    @property
+    def x(self):
+        return self.x_rel
+
+    @property
+    def y(self):
+        return self.y_rel
 
     def move_in_direction(self, direction):
         """
         direction doit être en radian
         """
-        self.x += math.cos(direction) * max(self.vitesse, 0)
-        self.y += math.sin(direction) * max(self.vitesse, 0)
+        self.x_abs += math.cos(direction) * max(self.vitesse, 0)
+        self.y_abs += math.sin(direction) * max(self.vitesse, 0)
 
     def move_to_position(self, position: tuple):
         if not (

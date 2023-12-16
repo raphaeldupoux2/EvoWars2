@@ -1,5 +1,6 @@
 import pygame
 
+from anew.world.camera import Camera
 from anew.world.domaine_mortuaire.cimetiere import Cimetiere
 from anew.world.player import Player
 
@@ -14,15 +15,18 @@ class World:
         self.player = []
         self.spectre = []
         self.pierre_tombale = []
+        self.marqueur = []
 
-        Player(self, (100, 400), 3, self.dimension_humain, 300, 500)
-        Player(self, (100, 200), 3, self.dimension_humain, 300, 500)
+        player1 = Player(self, (100, 400), 3, self.dimension_humain, 300, 500)
+        player2 = Player(self, (100, 200), 3, self.dimension_humain, 300, 500)
 
         Cimetiere(self)
 
+        self.camera = Camera(self, (100, 100), player1)
+
     @property
     def all_objects(self):
-        return self.player + self.spectre + self.pierre_tombale
+        return self.player + self.spectre + self.pierre_tombale + [self.camera] + self.marqueur
 
     @property
     def all_objects_sorted(self):

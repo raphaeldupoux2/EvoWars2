@@ -15,15 +15,17 @@ class GameInstance:
         if event.type == pygame.QUIT:
             self.running = False
 
-    def joueur1_button(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:
-                self.world.player[1].position_affectee = event.pos
-
     def joueur2_button(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 3:
-                self.world.player[0].position_affectee = event.pos
+            if event.button == 1:  # souris clic gauche
+                self.world.player[1].position_affectee.x_abs = event.pos[0] + self.world.camera.x_abs
+                self.world.player[1].position_affectee.y_abs = event.pos[1] + self.world.camera.y_abs
+
+    def joueur1_button(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 3:  # souris clic droit
+                self.world.player[0].position_affectee.x_abs = event.pos[0] + self.world.camera.x_abs
+                self.world.player[0].position_affectee.y_abs = event.pos[1] + self.world.camera.y_abs
 
     def event(self):
         for event in pygame.event.get():

@@ -45,9 +45,12 @@ class Spectre(Acteur):
         self.direction += random.uniform(-math.pi/20, math.pi/20)
 
     def move_in_direction(self, direction):
-        self.direction_calcul()
-        self.image.angle = normalize_angle(math.degrees(self.direction))
+        self.image.angle = normalize_angle(math.degrees(direction))
         super().move_in_direction(direction)
+
+    def move(self):
+        self.direction_calcul()
+        self.move_in_direction(self.direction)
 
     def slow_power(self):
         for v in self.monde.vivant:
@@ -70,7 +73,7 @@ class Spectre(Acteur):
             self.possession_power()
 
     def behavior(self, w):
-        self.move_in_direction(self.direction)
+        self.move()
         self.print_image(w)
         self.power()
         # affiche_radius(w, (self.x, self.y), self.radius)
