@@ -13,9 +13,9 @@ class Serveur:
         self.client_socket, self.address = None, None
 
     def accept_connections(self):
-        print('Waiting for connection...')
+        print('Serveur: Waiting for connection...')
         self.client_socket, self.address = self.server_socket.accept()
-        print('Connection established with', self.address)
+        print('Serveur: Connection established with', self.address)
         self.send_world_data()
 
     def send_world_data(self):

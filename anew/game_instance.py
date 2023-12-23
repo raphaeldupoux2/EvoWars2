@@ -15,27 +15,26 @@ class GameInstance:
         if event.type == pygame.QUIT:
             self.running = False
 
-    def joueur2_button(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:  # souris clic gauche
-                self.world.player[1].position_affectee.x_abs = event.pos[0] + self.world.camera.x_abs
-                self.world.player[1].position_affectee.y_abs = event.pos[1] + self.world.camera.y_abs
+    def change_control_joueur(self, event):
+        if event.type == pygame.KEYDOWN:  # Vérifie si une touche a été enfoncée
+            if event.key == pygame.K_SPACE:
+                self.world.indice_personnage_control = (self.world.indice_personnage_control + 1) % len(self.world.liste_personnage_control)
 
-    def joueur1_button(self, event):
+    def joueur_deplacement(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 3:  # souris clic droit
-                self.world.player[0].position_affectee.x_abs = event.pos[0] + self.world.camera.x_abs
-                self.world.player[0].position_affectee.y_abs = event.pos[1] + self.world.camera.y_abs
+            if event.button == 3:  # souris clic gauche
+                self.world.personnage_control.position_affectee.x_abs = event.pos[0] + self.world.camera.x_abs
+                self.world.personnage_control.position_affectee.y_abs = event.pos[1] + self.world.camera.y_abs
 
     def event(self):
         for event in pygame.event.get():
             self.exit(event)
-            self.joueur1_button(event)
-            self.joueur2_button(event)
+            self.joueur_deplacement(event)
+            self.change_control_joueur(event)
 
     def game(self):
-        f1 = self.conf.fenetres.add_sous_fenetre(self.conf.main_window, (10, 10), 980, 520, "campagne")
-        f2 = self.conf.fenetres.add_sous_fenetre(self.conf.main_window, (10, 540), 980, 170, "stats")
+        f1 = self.conf.fenetres.add_sous_fenetre(self.conf.main_window, (10, 10), 1520, 600, "campagne")
+        f2 = self.conf.fenetres.add_sous_fenetre(self.conf.main_window, (10, 620), 1520, 170, "stats")
 
         while self.running:
             self.event()

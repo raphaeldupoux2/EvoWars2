@@ -19,6 +19,9 @@ class Spectre(Acteur):
         self.possession_radius = 3
         self.monde.spectre.append(self)
 
+    def __repr__(self):
+        return f"Spectre_PT: {self.pierre_tombale.x_abs:.0f},{self.pierre_tombale.y_abs:.0f}"
+
     def print_image(self, w):
         w.window.blit(self.image.cropped_png, (self.x - self.image.width * self.image.W_DECAL, self.y - self.image.height * self.image.H_DECAL))
         self.image.refresh_cropped_png()

@@ -41,13 +41,13 @@ class Acteur(ABC):
         """
         direction doit être en radian
         """
-        self.x_abs += math.cos(direction) * max(self.vitesse, 0)
-        self.y_abs += math.sin(direction) * max(self.vitesse, 0)
+        self.x_abs += math.cos(direction) * self.vitesse
+        self.y_abs += math.sin(direction) * self.vitesse
 
     def move_to_position(self, position: tuple):
         if not (
-                (position[0] - max(self.vitesse, 0) * 2 <= self.x <= position[0] + max(self.vitesse, 0) * 2) and
-                (position[1] - max(self.vitesse, 0) * 2 <= self.y <= position[1] + max(self.vitesse, 0) * 2)
+                (position[0] - self.vitesse * 2 <= self.x <= position[0] + self.vitesse * 2) and
+                (position[1] - self.vitesse * 2 <= self.y <= position[1] + self.vitesse * 2)
         ):
             self.move_in_direction(self.direction_radian_vers(position))
 

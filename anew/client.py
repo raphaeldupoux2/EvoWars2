@@ -12,7 +12,9 @@ class Client:
 
     def receive_world_data(self):
         while True:
+            print("Client: Recoit data")
             world_data = self.client_socket.recv(4096)
+            print("Client: deserialize data")
             self.game_instance.world = self.deserialize_world(world_data)
             # Ajoutez un délai pour ne pas surcharger la connexion
             time.sleep(0.1)
