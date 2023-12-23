@@ -8,7 +8,14 @@ from anew.world import World
 class GameInstance:
     def __init__(self):
         self.running = True
-        self.conf = PygameSetUp("FullStratFightTactic", 1000, 720, 60)
+
+        pygame.init()
+        # Récupérer la taille de l'écran
+        screen_info = pygame.display.Info()
+        self.screen_width = screen_info.current_w
+        self.screen_height = screen_info.current_h
+
+        self.conf = PygameSetUp("FullStratFightTactic", self.screen_width, self.screen_height-50, 60)
         self.world = World(self.conf)
 
     def exit(self, event):
@@ -33,8 +40,8 @@ class GameInstance:
             self.change_control_joueur(event)
 
     def game(self):
-        f1 = self.conf.fenetres.add_sous_fenetre(self.conf.main_window, (10, 10), 1520, 600, "campagne")
-        f2 = self.conf.fenetres.add_sous_fenetre(self.conf.main_window, (10, 620), 1520, 170, "stats")
+        f1 = self.conf.fenetres.add_sous_fenetre(self.conf.main_window, (0, 0), self.screen_width, self.screen_height*0.85 - 1, "campagne")
+        f2 = self.conf.fenetres.add_sous_fenetre(self.conf.main_window, (0, self.screen_height*0.85), self.screen_width, self.screen_height*0.25, "stats")
 
         while self.running:
             self.event()

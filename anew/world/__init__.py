@@ -64,8 +64,8 @@ class World:
         spectre_cible = police.render(f"cible des spectres : {[s.cible for s in self.spectre]}", True, (0, 0, 0))
 
         w.window.blit(player_vitesse, (10, 10))
-        w.window.blit(player_possesseur, (10, 40))
-        w.window.blit(player_possede, (10, 70))
-        w.window.blit(player_is_contoled, (10, 100))
-        w.window.blit(player_position, (10, 130))
-        w.window.blit(spectre_cible, (300, 10))
+        w.window.blit(player_position, (10, 40))
+        w.window.blit(player_possesseur, (300, 10))
+        w.window.blit(player_possede, (300, 40))
+        w.window.blit(player_is_contoled, (300, 70))
+        w.window.blit(spectre_cible, (700, 10))
