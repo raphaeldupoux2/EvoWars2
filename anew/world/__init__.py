@@ -9,6 +9,7 @@ from anew.world.zone import Zone
 class World:
     dimension_humain = (27, 60)
     dimension_pt = (20, 20)
+    cote_zone = 400
 
     def __init__(self, conf):
         self.conf = conf
@@ -16,17 +17,41 @@ class World:
         self.player = []
         self.spectre = []
         self.pierre_tombale = []
+        self.fireball = []
         self.marqueur = []
         self.zone = []
 
-        zone = Zone(self, (0, 0), 800)
+        self.camera = Camera(self, (100, 100))
 
-        player1 = Player(self, (100, 400), 3, self.dimension_humain, 300, 500, zone, numero=1)
-        player2 = Player(self, (100, 200), 3, self.dimension_humain, 300, 500, zone, numero=2)
+        # ZONE 1 Cimetière
+        zone = Zone(self, (0, 0), self.cote_zone)
+        player1 = Player(self, (100, 200), 3, self.dimension_humain, 300, 500, zone, numero=1)
+        Cimetiere(self, (350, 50), zone)
 
-        Cimetiere(self, (350, 250))
+        self.camera.cible = player1
 
-        self.camera = Camera(self, (100, 100), player2)
+        # ZONE 2
+        zone2 = Zone(self, (-self.cote_zone, 0), self.cote_zone)
+        player2 = Player(self, (-100, 400), 3, self.dimension_humain, 300, 500, zone2, numero=2)
+
+        # ZONE 3
+        zone3 = Zone(self, (-self.cote_zone, -self.cote_zone), self.cote_zone)
+        player3 = Player(self, (-100, 400), 3, self.dimension_humain, 300, 500, zone3, numero=3)
+
+        # ZONE 4
+        zone4 = Zone(self, (0, -self.cote_zone), self.cote_zone)
+        player4 = Player(self, (-100, 400), 3, self.dimension_humain, 300, 500, zone4, numero=4)
+
+        zone5 = Zone(self, (0, self.cote_zone), self.cote_zone)
+
+        zone6 = Zone(self, (self.cote_zone, 0), self.cote_zone)
+
+        zone7 = Zone(self, (self.cote_zone, self.cote_zone), self.cote_zone)
+        #
+        # zone8 = Zone(self, (0, -self.cote_zone), self.cote_zone)
+
+        for z in self.zone:
+            z.placement_tapis()
 
         self.indice_personnage_control = 0
         self.liste_personnage_control = []
@@ -34,7 +59,7 @@ class World:
 
     @property
     def all_objects(self):
-        return self.player + self.spectre + self.pierre_tombale + [self.camera] + self.marqueur + self.zone
+        return self.player + self.spectre + self.pierre_tombale + [self.camera] + self.marqueur + self.zone + self.fireball
 
     @property
     def all_objects_sorted(self):
@@ -52,6 +77,8 @@ class World:
         for o in self.all_objects_sorted:
             o.behavior(window)
         self.camera.cible = self.personnage_control
+        print(self.marqueur)
+        # print(self.zone[0].rect.midleft, self.zone[1].rect.midright)
 
     def affiche_stat(self, w):
         police = pygame.font.Font(None, 36)

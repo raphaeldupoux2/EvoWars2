@@ -1,6 +1,8 @@
 import math
 import random
 
+import pygame
+
 from anew.load_png.sorcier import ImageSorcier
 from anew.world.acteur import Acteur, normalize_angle
 
@@ -8,8 +10,8 @@ from anew.world.acteur import Acteur, normalize_angle
 class Spectre(Acteur):
     vitesse_naturelle = 1
 
-    def __init__(self, monde, coords: tuple, vitesse, dimension):
-        super().__init__(monde, "creature", coords, vitesse=vitesse)
+    def __init__(self, monde, coords: tuple, vitesse, dimension, zone):
+        super().__init__(monde, "creature", coords, zone=zone, vitesse=vitesse, vivant=False)
         self.image = ImageSorcier(dimension, 'picture/sorcier_fantome.png')
         self._cible_potentiel = self.monde.player
         self.cible = None
@@ -31,6 +33,10 @@ class Spectre(Acteur):
             self.direction = self.direction_radian_vers((self.pierre_tombale.x, self.pierre_tombale.y))
             self.cible = None
 
+    def move_respecte_zone(self):  # si il s'éloigne trop de la zone alors il est stoppé
+        if not self.zone.is_point_inside((self.x, self.y)):
+            self.direction = self.direction_radian_vers(self.zone.rect.center)
+
     def chasse_cible_potentiel_dans_aire_pierre_tombale(self):  # si quelqu'un s'approche trop près de la pierre tombale alors il le prend pour cible
         for c in self._cible_potentiel:
             if self.pierre_tombale.distance_avec((c.x, c.y)) <= self.pierre_tombale.radius:
@@ -38,6 +44,7 @@ class Spectre(Acteur):
                     self.cible = c
 
     def direction_calcul(self):
+        self.move_respecte_zone()
         if self.pierre_tombale is not None:
             self.respecte_pierre_tombale_limite()
             self.chasse_cible_potentiel_dans_aire_pierre_tombale()
@@ -75,8 +82,11 @@ class Spectre(Acteur):
         if self.cible is not None:
             self.possession_power()
 
+    def affiche_radius(self, w):
+        pygame.draw.circle(w.window, (0, 0, 0), (self.x, self.y), self.slow_radius, 1)
+
     def behavior(self, w):
         self.move()
         self.print_image(w)
         self.power()
-        # affiche_radius(w, (self.x, self.y), self.radius)
+        # self.affiche_radius(w)

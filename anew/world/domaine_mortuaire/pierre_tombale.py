@@ -15,7 +15,7 @@ class PierreTombale(Acteur):
         pygame.draw.circle(w.window, (0, 0, 0), [self.x, self.y], self.radius, 1)
 
     def print_image(self, w):
-        w.window.blit(self.image.png, (self.x - self.image.width * 1/2, self.y - self.image.height * 50/125))
+        w.window.blit(self.image.png, (self.x - self.image.width * self.image.W_DECAL, self.y - self.image.height * self.image.H_DECAL))
 
     def behavior(self, w):
         self.print_image(w)

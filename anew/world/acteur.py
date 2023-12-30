@@ -5,15 +5,16 @@ from abc import ABC, abstractmethod
 
 class Famille:
     def __init__(self, type_objet, vivant):
-        self.type_objet: str = type_objet  # "creature" / "objet" / "lieu" / "abstrait" / "marqueur"
+        self.type_objet: str = type_objet  # "creature" / "objet" / "lieu" / "abstrait" / "marqueur", "projectile"
         self.vivant: bool = vivant
 
 
 class Acteur(ABC):
-    def __init__(self, monde, type_objet, coords: tuple, vitesse: float = 0, vivant=None):
+    def __init__(self, monde, type_objet, coords: tuple, zone=None, vitesse: float = 0, vivant=None):
         self.monde = monde
         self.famille = Famille(type_objet, vivant)
         self.x_abs, self.y_abs = coords
+        self.zone = zone
         self.vitesse = vitesse
         self.vitesse_ref = vitesse
 
@@ -50,6 +51,8 @@ class Acteur(ABC):
                 (position[1] - self.vitesse * 2 <= self.y <= position[1] + self.vitesse * 2)
         ):
             self.move_in_direction(self.direction_radian_vers(position))
+        else:
+            return True
 
     def direction_radian_vers(self, position: tuple):
         return math.atan2(position[1] - self.y, position[0] - self.x)

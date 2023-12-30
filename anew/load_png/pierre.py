@@ -3,6 +3,9 @@ import pygame
 
 
 class ImageStone:
+    W_DECAL = 1/2
+    H_DECAL = 50/125
+
     def __init__(self, dimension):
         self.width, self.height = dimension
         self.liste_png_path = ["picture/pierre/pierre.png",

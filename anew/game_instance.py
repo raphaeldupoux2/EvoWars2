@@ -3,6 +3,7 @@ import threading
 
 from anew.set_up import PygameSetUp
 from anew.world import World
+from anew.world.player import Marqueur
 
 
 class GameInstance:
@@ -29,15 +30,28 @@ class GameInstance:
 
     def joueur_deplacement(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 3:  # souris clic gauche
-                self.world.personnage_control.position_affectee.x_abs = event.pos[0] + self.world.camera.x_abs
-                self.world.personnage_control.position_affectee.y_abs = event.pos[1] + self.world.camera.y_abs
+            if event.button == 3:  # souris clic droit
+                self.world.marqueur = []
+                self.world.personnage_control.position_affectee = Marqueur(self.world, (event.pos[0] + self.world.camera.x_abs, event.pos[1] + self.world.camera.y_abs))
+
+    def joueur_fireball_power(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1:  # souris clic gauche
+                self.world.personnage_control.fireball_power(event.pos)
+
+    def joueur_change_de_zone(self, event):
+        if event.type == pygame.KEYDOWN:  # Vérifie si une touche a été enfoncée
+            if event.key == pygame.K_a:
+                print("A")
+                self.world.personnage_control.passage_entre_zone()
 
     def event(self):
         for event in pygame.event.get():
             self.exit(event)
             self.joueur_deplacement(event)
             self.change_control_joueur(event)
+            self.joueur_fireball_power(event)
+            self.joueur_change_de_zone(event)
 
     def game(self):
         f1 = self.conf.fenetres.add_sous_fenetre(self.conf.main_window, (0, 0), self.screen_width, self.screen_height*0.85 - 1, "campagne")
