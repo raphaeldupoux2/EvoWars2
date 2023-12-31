@@ -42,7 +42,6 @@ class GameInstance:
     def joueur_change_de_zone(self, event):
         if event.type == pygame.KEYDOWN:  # Vérifie si une touche a été enfoncée
             if event.key == pygame.K_a:
-                print("A")
                 self.world.personnage_control.passage_entre_zone()
 
     def event(self):
