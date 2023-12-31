@@ -1,7 +1,5 @@
 import pygame
 
-from picture.tools import Tools
-
 
 class ImageClee:
     W_DECAL = 1 / 2
@@ -21,6 +19,3 @@ class ImageClee:
 
     def reload_png(self):
         self.png = self.load_png()
-
-
-Tools.changer_couleur_image_and_save_it(ImageClee((400, 400)).png, alpha_increase=100)
